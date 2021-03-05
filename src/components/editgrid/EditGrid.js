@@ -33,6 +33,8 @@ export default class EditGridComponent extends NestedArrayComponent {
       templates: {
         header: EditGridComponent.defaultHeaderTemplate,
         row: EditGridComponent.defaultRowTemplate,
+        tableHeader: EditGridComponent.defaultTableHeaderTemplate,
+        tableRow: EditGridComponent.defaultTableRowTemplate,
         footer: '',
       },
     }, ...extend);
@@ -49,36 +51,75 @@ export default class EditGridComponent extends NestedArrayComponent {
     };
   }
 
+  static get defaultTableHeaderTemplate() {
+    return `
+      <tr>
+        {% util.eachComponent(components, function(component) { %}
+          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}
+            <td class="editgrid-table-column">{{ component.label }}</td>
+          {% } %}
+        {% }) %}
+        <td class="editgrid-table-column">Settings</td>
+      </tr>
+    `;
+  }
+
   static get defaultHeaderTemplate() {
-    return `<div class="row">
-      {% util.eachComponent(components, function(component) { %}
-        {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}
-          <div class="col-sm-2">{{ component.label }}</div>
-        {% } %}
-      {% }) %}
-    </div>`;
+    return `
+      <div class="row">
+        {% util.eachComponent(components, function(component) { %}
+          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}
+            <div class="col-sm-2">{{ component.label }}</div>
+          {% } %}
+        {% }) %}
+      </div>
+    `;
   }
 
   static get defaultRowTemplate() {
-    return `<div class="row">
-      {% util.eachComponent(components, function(component) { %}
-        {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}
+    return `
+      <div class="row">
+        {% util.eachComponent(components, function(component) { %}
+          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}
+            <div class="col-sm-2">
+              {{ getView(component, row[component.key]) }}
+            </div>
+          {% } %}
+        {% }) %}
+        {% if (!instance.options.readOnly && !instance.disabled) { %}
           <div class="col-sm-2">
-            {{ getView(component, row[component.key]) }}
+            <div class="btn-group pull-right">
+              <button class="btn btn-default btn-light btn-sm editRow"><i class="{{ iconClass('edit') }}"></i></button>
+              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}
+                <button class="btn btn-danger btn-sm removeRow"><i class="{{ iconClass('trash') }}"></i></button>
+              {% } %}
+            </div>
           </div>
         {% } %}
-      {% }) %}
-      {% if (!instance.options.readOnly && !instance.disabled) { %}
-        <div class="col-sm-2">
-          <div class="btn-group pull-right">
-            <button class="btn btn-default btn-light btn-sm editRow"><i class="{{ iconClass('edit') }}"></i></button>
-            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}
+      </div>
+    `;
+  }
+
+  static get defaultTableRowTemplate() {
+    return `
+      {% util.eachComponent(components, function(component) { %}
+          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}
+            <td class="editgrid-table-column">
+              {{ getView(component, row[component.key]) }}
+            </td>
+          {% } %}
+        {% }) %}
+        {% if (!instance.options.readOnly && !instance.disabled) { %}
+          <td class="editgrid-table-column">
+            <div class="btn-group">
+              <button class="btn btn-default btn-light btn-sm editRow"><i class="{{ iconClass('edit') }}"></i></button>
+              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}
               <button class="btn btn-danger btn-sm removeRow"><i class="{{ iconClass('trash') }}"></i></button>
-            {% } %}
-          </div>
-        </div>
-      {% } %}
-    </div>`;
+              {% } %}
+            </div>
+          </td>
+        {% } %}
+    `;
   }
 
   get defaultDialogTemplate() {
@@ -89,6 +130,18 @@ export default class EditGridComponent extends NestedArrayComponent {
       <button ref="dialogYesButton" class="btn btn-danger">${this.t('Yes, delete it')}</button>
     </div>
   `;
+  }
+
+  get defaultRowTemplate() {
+    return this.displayAsTable ?
+      EditGridComponent.defaultTableRowTemplate
+      : EditGridComponent.defaultRowTemplate;
+  }
+
+  get defaultHeaderTemplate() {
+    return this.displayAsTable ?
+      EditGridComponent.defaultTableHeaderTemplate
+      : EditGridComponent.defaultHeaderTemplate;
   }
 
   /**
@@ -160,6 +213,10 @@ export default class EditGridComponent extends NestedArrayComponent {
 
   get data() {
     return this._data;
+  }
+
+  get displayAsTable() {
+    return this.component.displayAsTable;
   }
 
   set data(value) {
@@ -254,16 +311,49 @@ export default class EditGridComponent extends NestedArrayComponent {
     return [EditRowState.New, EditRowState.Editing, EditRowState.Viewing].includes(editRow.state);
   }
 
+  get rowTemplate() {
+    let rowTemplate;
+    if (Evaluator.noeval) {
+      rowTemplate = this.displayAsTable ?
+        templates.tableRow
+        : templates.row;
+    }
+    else {
+      rowTemplate = this.displayAsTable ?
+        _.get(this.component, 'templates.tableRow', this.defaultRowTemplate)
+        : _.get(this.component, 'templates.row', this.defaultRowTemplate);
+    }
+
+    return rowTemplate;
+  }
+
+  get headerTemplate() {
+    let headerTemplate;
+    if (Evaluator.noeval) {
+      headerTemplate = this.displayAsTable ?
+        templates.tableHeader
+        : templates.header;
+    }
+    else {
+      headerTemplate = this.displayAsTable ?
+        _.get(this.component, 'templates.tableHeader', this.defaultHeaderTemplate)
+        : _.get(this.component, 'templates.header', this.defaultHeaderTemplate);
+    }
+
+    return headerTemplate;
+  }
+
   render(children) {
     if (this.builderMode) {
       return super.render();
     }
 
     const dataValue = this.dataValue || [];
-    const headerTemplate = Evaluator.noeval ? templates.header : _.get(this.component, 'templates.header');
-    const t =this.t.bind(this);
+    const headerTemplate = this.headerTemplate;
+    const t = this.t.bind(this);
+    const templateName = this.displayAsTable ? 'editgridTable' : 'editgrid';
 
-    return super.render(children || this.renderTemplate('editgrid', {
+    return super.render(children || this.renderTemplate(templateName, {
       ref: {
         row: this.rowRef,
         addRow: this.addRowRef,
@@ -286,6 +376,17 @@ export default class EditGridComponent extends NestedArrayComponent {
       hasAddButton: this.hasAddButton(),
       hasRemoveButtons: this.hasRemoveButtons(),
     }));
+  }
+
+  renderComponents(components) {
+    components = components || this.getComponents();
+    const children = components.map(component => component.render());
+    const templateName = this.displayAsTable && this.prevHasAddButton ? 'tableComponents' : 'components';
+
+    return this.renderTemplate(templateName, {
+      children,
+      components,
+    });
   }
 
   attach(element) {
@@ -408,7 +509,7 @@ export default class EditGridComponent extends NestedArrayComponent {
     }
     else {
       const flattenedComponents = this.flattenComponents(rowIndex);
-      const rowTemplate = Evaluator.noeval ? templates.row : _.get(this.component, 'templates.row', EditGridComponent.defaultRowTemplate);
+      const rowTemplate = this.rowTemplate;
 
       return this.renderString(
         rowTemplate,
