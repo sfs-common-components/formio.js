@@ -8,6 +8,7 @@ import { fastCloneDeep, bootstrapVersion, getArrayFromComponentPath, getStringFr
 import { eachComponent, getComponent } from './utils/formUtils';
 import BuilderUtils from './utils/builder';
 import _ from 'lodash';
+
 require('./components/builder');
 
 let Templates = Formio.Templates;
@@ -1265,6 +1266,7 @@ export default class WebformBuilder extends Component {
           'customConditional',
           'id'
         ]));
+
         const parentComponent = defaultValueComponent.parent;
         let tabIndex = -1;
         let index = -1;
@@ -1305,6 +1307,23 @@ export default class WebformBuilder extends Component {
       }
     }
 
+    if (component.type==='datagrid' && component.enableRowGroups) {
+    let item;
+     if (component.defaultValue.length===1) {
+      item = component.defaultValue[0];
+      component.defaultValue.pop();
+     }
+     const rowGroups=component.rowGroups;
+
+     component.defaultValue=[];
+
+    rowGroups.map((row)=>{
+    const  noofrowingroup=row.numberOfRows;
+    for (let j=0; j<noofrowingroup; j++) {
+          component.defaultValue.push({ ...item });
+        }
+    });
+    }
     // Called when we update a component.
     this.emit('updateComponent', component);
   }
