@@ -8,6 +8,7 @@ import { fastCloneDeep, bootstrapVersion, getArrayFromComponentPath, getStringFr
 import { eachComponent, getComponent } from './utils/formUtils';
 import BuilderUtils from './utils/builder';
 import _ from 'lodash';
+import components from './components';
 
 require('./components/builder');
 
@@ -1222,6 +1223,7 @@ export default class WebformBuilder extends Component {
 
   updateComponent(component, changed) {
     // Update the preview.
+
     if (this.preview) {
       this.preview.form = {
         components: [_.omit({ ...component }, [
@@ -1280,7 +1282,6 @@ export default class WebformBuilder extends Component {
             return false;
           });
         });
-
         if (tabIndex !== -1 && index !== -1 && changed && changed.value) {
           const sibling = parentComponent.tabs[tabIndex][index + 1];
           parentComponent.removeComponent(defaultValueComponent);
@@ -1303,7 +1304,7 @@ export default class WebformBuilder extends Component {
         }
 
         _.set(this.preview._data, dataPath, changed.value);
-        _.set(this.webform._data, dataPath, changed.value);
+       _.set(this.webform._data, dataPath, changed.value);
       }
     }
 
@@ -1313,20 +1314,24 @@ export default class WebformBuilder extends Component {
       item = component.defaultValue[0];
       component.defaultValue.pop();
      }
-     const rowGroups=component.rowGroups;
-
-     component.defaultValue=[];
+    const rowGroups=component.rowGroups;
+let sum =0;
 
     rowGroups.map((row)=>{
     const  noofrowingroup=row.numberOfRows;
+     sum +=noofrowingroup;
+
     for (let j=0; j<noofrowingroup; j++) {
+         if (component.defaultValue.length<sum) {
           component.defaultValue.push({ ...item });
+         }
         }
     });
     }
+
     // Called when we update a component.
     this.emit('updateComponent', component);
-  }
+}
 
   findRepeatablePaths() {
     const repeatablePaths = [];
