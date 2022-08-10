@@ -1327,6 +1327,7 @@ let sum =0;
          }
         }
     });
+      component.totalRows=sum ;
     }
 
     // Called when we update a component.
