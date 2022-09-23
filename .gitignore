@@ -9,3 +9,9 @@ bower_components
 .idea
 .ruby-version
 .ruby-gemset
+app
+dist
+docs
+resources
+app/bootstrap/css/bootstrap-grid.css
+package-lock.json

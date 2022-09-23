@@ -179,7 +179,7 @@ export default class PDF extends Webform {
       return '';
     }
 
-    let iframeSrc = `${this._form.settings.pdf.src}.html`;
+    let iframeSrc = `${this._form.settings.pdf.src}`;
     const params = [`id=${this.id}`];
 
     if (this.options.readOnly) {
