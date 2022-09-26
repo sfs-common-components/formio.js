@@ -16,9 +16,9 @@ const url = (formio) => {
       }
 
       if (!json) {
-        for (const key in data) {
-          fd.append(key, data[key]);
-        }
+        //for (const key in data) {
+          fd.append('file', data['file']);
+        //}
       }
 
       xhr.onload = () => {

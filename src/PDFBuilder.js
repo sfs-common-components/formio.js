@@ -227,7 +227,7 @@ export default class PDFBuilder extends WebformBuilder {
       .then((result) => {
         _.set(this.webform.form, 'settings.pdf', {
           id: result.data.file,
-          src: `${result.data.filesServer}${result.data.path}`
+          src: `${result.data.path}`
         });
         if (this.refs.dragDropText) {
           this.refs.dragDropText.style.display = 'inherit';
