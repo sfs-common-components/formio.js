@@ -1,6 +1,6 @@
 {
-  "name": "formiojs",
-  "version": "4.14.0-rc.26",
+  "name": "@smartfoodsafe/pdf-formiojs",
+  "version": "1.0.0",
   "description": "JavaScript powered Forms with JSON Form Builder",
   "main": "index.js",
   "types": "index.d.ts",
