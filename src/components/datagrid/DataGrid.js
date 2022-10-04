@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import NestedArrayComponent from '../_classes/nestedarray/NestedArrayComponent';
 import { fastCloneDeep, getFocusableElements } from '../../utils/utils';
+import moment,{ isMoment } from 'moment';
 
 let dragula;
 if (typeof window !== 'undefined') {
@@ -458,17 +459,31 @@ export default class DataGridComponent extends NestedArrayComponent {
       return false;
     });
   }
-
   cloneRow(cloneIndex) {
     const index = this.rows.length;
-    // if (this.dataValue.length === index) {
-    //   this.dataValue.push({});
-    // }
+    const isDate = (date) => {
+      if (typeof date === 'number') {
+        return false;
+      }
+      else if (typeof date === 'string') {
+        if (!isNaN(date)) {
+          return false;
+        }
+        else {
+        const newdate=new Date(date);
+         if (newdate.toString() === 'Invalid Date') {
+          return false;
+         }
+         else {
+          return true;
+         }
+        }
+      }
+    };
     let row;
     let cloneRow;
     const dataValue = this.dataValue;
     const defaultValue = this.defaultValue;
-
     if (this.initEmpty && defaultValue[index]) {
       row = defaultValue[index];
       dataValue[index] = row;
@@ -476,6 +491,16 @@ export default class DataGridComponent extends NestedArrayComponent {
     else {
       cloneRow = dataValue[cloneIndex];
       dataValue[index] = _.cloneDeep(cloneRow);
+      for (const key in dataValue[index]) {
+          if (isMoment(dataValue[index][key])) {
+            const currentDate=new Date();
+            dataValue[index][key]=moment(currentDate);
+          }
+          else if (isDate(dataValue[index][key])) {
+            const currentDateTime=new Date();
+            dataValue[index][key]=currentDateTime;
+          }
+      }
       row =dataValue[index];
     }
 
