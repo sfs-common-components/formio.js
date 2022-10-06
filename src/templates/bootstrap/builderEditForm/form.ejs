@@ -9,11 +9,45 @@
         {{ctx.editForm}}
     </div>
     {% if (ctx.preview) { %}
-    <div class="col col-sm-6">
+    <div class="col col-sm-12">
       <div style="margin-top: 10px;">
-        <button class="btn btn-success" style="margin-right: 10px; background-color: #FF9B08" ref="saveButton">{{ctx.t('Save')}}</button>
-        <button class="btn btn-secondary" style="margin-right: 10px;" ref="cancelButton">{{ctx.t('Cancel')}}</button>
-        <button class="btn btn-danger" ref="removeButton">{{ctx.t('Remove')}}</button>
+        <button  style="font-size: 14px;
+        box-shadow: none;
+        letter-spacing: 1.75px;
+        color: #fff;
+        background-color: #FF9B08;
+        padding: 6px 16px;
+        border: none;
+        box-sizing: border-box;
+        transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        font-family: 'Open Sans', 'sans-serif';
+        font-weight: 500;
+        line-height: 1.75;
+        border-radius: 4px;" ref="saveButton">{{ctx.t('Save')}}</button>
+        <button  style="background-color: white;
+        color: rgb(255, 164, 28);
+        border: 1px solid rgb(255, 164, 28);
+        font-size: 14px;
+        box-shadow: none;
+        letter-spacing: 1.75px;
+        padding: 6px 16px;
+        box-sizing: border-box;
+        transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        font-family: 'Open Sans', 'sans-serif';
+        font-weight: 500;
+        line-height: 1.75;border-radius: 4px;" ref="cancelButton">{{ctx.t('Cancel')}}</button>
+        <button  style="background-color: white;
+        color: rgb(255, 164, 28);
+        border: 1px solid rgb(255, 164, 28);
+        font-size: 14px;
+        box-shadow: none;
+        letter-spacing: 1.75px;
+        padding: 6px 16px;
+        box-sizing: border-box;
+        transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        font-family: 'Open Sans', 'sans-serif';
+        font-weight: 500;
+        line-height: 1.75;border-radius: 4px;" ref="removeButton">{{ctx.t('Remove')}}</button>
       </div>
     </div>
   {% } %}
