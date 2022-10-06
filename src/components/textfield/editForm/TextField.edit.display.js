@@ -14,6 +14,23 @@ export default [
       required: true
     }
   },
+  {
+    weight: 100,
+    type: 'textfield',
+    input: true,
+    key: 'placeholder',
+    label: 'Placeholder',
+    placeholder: 'Placeholder',
+    tooltip: 'The placeholder text that will appear when this field is empty.'
+  },
+  {
+    weight: 10,
+    type: 'checkbox',
+    label: 'Required',
+    tooltip: 'A required field must be filled in before the form can be submitted.',
+    key: 'validate.required',
+    input: true
+  },
   // {
   //   weight: 400,
   //   type: 'select',
