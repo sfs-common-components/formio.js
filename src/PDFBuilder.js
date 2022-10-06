@@ -48,7 +48,7 @@ export default class PDFBuilder extends WebformBuilder {
           checkbox: false,
           signature: true,
           select: false,
-          textarea: false,
+          textarea: true,
           datetime: true,
           file: false,
           htmlelement: false,
