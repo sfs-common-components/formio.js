@@ -316,6 +316,22 @@ export default class Input extends Multivalue {
 
   addFocusBlurEvents(element) {
     this.addEventListener(element, 'focus', () => {
+      const micIcon=document.getElementById('mic-icon');
+      if (this.component.type==='textfield' || this.component.type==='number' ||this.component.type==='textarea') {
+        if (micIcon) {
+          micIcon.style.display='grid';
+        }
+        const compInSession = { elemId:`${this.id}-${this.key}`, componentType: this.component.type };
+        if ((this.component.type==='textfield' || this.component.type==='textarea') && this.component.case) {
+          compInSession.case=this.component.case;
+        }
+        sessionStorage.setItem('focusedElement', JSON.stringify(compInSession));
+      }
+      else {
+        if (micIcon) {
+          micIcon.style.display='none';
+        }
+      }
       if (this.root.focusedComponent !== this) {
         if (this.root.pendingBlur) {
           this.root.pendingBlur();
