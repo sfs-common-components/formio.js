@@ -455,6 +455,7 @@ export default class DataGridComponent extends NestedArrayComponent {
         focusableElements[0].focus();
         return true;
       }
+      this.scrollIntoView(row[key].element);
       return false;
     });
   }
@@ -483,7 +484,7 @@ export default class DataGridComponent extends NestedArrayComponent {
     this.checkConditions();
     this.triggerChange();
     this.redraw().then(() => {
-    // this.focusOnNewRowElement(this.rows[index]);
+     this.focusOnNewRowElement(this.rows[index]);
     });
   }
 
