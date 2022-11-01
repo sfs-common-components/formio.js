@@ -21,6 +21,15 @@ export default [
     input: true
   },
   {
+    weight: 100,
+    type: 'textfield',
+    input: true,
+    key: 'placeholder',
+    label: 'Placeholder',
+    placeholder: 'Placeholder',
+    tooltip: 'The placeholder text that will appear when this field is empty.'
+  },
+  {
     type: 'textfield',
     input: true,
     key: 'format',
