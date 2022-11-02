@@ -16,3 +16,4 @@ resources
 app/bootstrap/css/bootstrap-grid.css
 package-lock.json
 .npmrc
+app/
