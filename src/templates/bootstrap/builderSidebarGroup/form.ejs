@@ -1,20 +1,5 @@
 <div class="card form-builder-panel" ref="group-panel-{{ctx.groupKey}}">
-  <div class="card-header form-builder-group-header" id="heading-{{ctx.groupKey}}">
-    <h5 class="mb-0 mt-0">
-      <button
-        class="btn btn-block builder-group-button"
-        type="button"
-        data-toggle="collapse"
-        data-target="#group-{{ctx.groupKey}}"
-        data-parent="#{{ctx.groupId}}"
-        aria-expanded="{{ctx.group.default}}"
-        aria-controls="group-{{ctx.groupKey}}"
-        ref="sidebar-anchor"
-      >
-        {{ctx.t(ctx.group.title, { _userInput: true })}}
-      </button>
-    </h5>
-  </div>
+
   <div
     id="group-{{ctx.groupKey}}"
     class="collapse {{ctx.group.default ? ' show' : ''}}"
@@ -24,6 +9,8 @@
     ref="sidebar-group"
   >
     <div id="group-container-{{ctx.groupKey}}" class="card-body no-drop p-2" ref="sidebar-container">
+
+      <!-- {{JSON.stringify(ctx.group.components)}} -->
       {% if (ctx.group.componentOrder.length || ctx.subgroups.length) { %}
         {% !ctx.group.componentOrder || ctx.group.componentOrder.forEach(function(componentKey) { %}
           <span

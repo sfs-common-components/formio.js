@@ -344,10 +344,10 @@ td > .form-group {
       margin-left: -23px;
     }
   }
-
   a {
-    text-decoration: underline;
+    text-decoration: none;
   }
+
 }
 
 .formio-component-file .fileSelector.fileDragOver {
@@ -1675,6 +1675,6 @@ div[data-oembed-url] {
 }
 
 span[role="link"] {
-  text-decoration: underline;
+
   cursor: pointer;
 }
