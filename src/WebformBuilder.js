@@ -550,7 +550,7 @@ export default class WebformBuilder extends Component {
 
   render() {
     this.basicGroups = [this.groupOrder[4], this.groupOrder[3], this.groupOrder[5]];
-    this.customGroups = [this.groupOrder[0], this.groupOrder[1], this.groupOrder[2]];
+    this.customGroups = [this.groupOrder[1], this.groupOrder[2], this.groupOrder[3],this.groupOrder[0]];
     this.otherGroups = [this.groupOrder[6]];
     this.groups[this.customGroups[0]].default = true;
     this.groups[this.otherGroups[0]].default = true;
