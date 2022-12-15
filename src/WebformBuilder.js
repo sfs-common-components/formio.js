@@ -81,7 +81,6 @@ export default class WebformBuilder extends Component {
       .filter(group => group && !group.ignore)
       .sort((a, b) => a.weight - b.weight)
       .map(group => group.key);
-
     for (const type in Components.components) {
       const component = Components.components[type];
       if (component.builderInfo && component.builderInfo.schema) {
@@ -549,9 +548,9 @@ export default class WebformBuilder extends Component {
   }
 
   render() {
-    this.basicGroups = [this.groupOrder[4], this.groupOrder[3], this.groupOrder[5]];
-    this.customGroups = [this.groupOrder[0], this.groupOrder[1], this.groupOrder[2]];
-    this.otherGroups = [this.groupOrder[6]];
+    this.basicGroups = [this.groupOrder[5], this.groupOrder[4], this.groupOrder[6]];
+    this.customGroups = [this.groupOrder[1], this.groupOrder[2], this.groupOrder[3],this.groupOrder[0]];
+    this.otherGroups = [this.groupOrder[7]];
     this.groups[this.customGroups[0]].default = true;
     this.groups[this.otherGroups[0]].default = true;
 
@@ -606,8 +605,8 @@ export default class WebformBuilder extends Component {
       }
 
       // Add the paste status in form
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        const data = window.sessionStorage.getItem('formio.clipboard');
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const data = window.localStorage.getItem('formio.clipboard');
         if (data) {
           this.addClass(this.refs.form, 'builder-paste-mode');
         }
@@ -1665,11 +1664,11 @@ export default class WebformBuilder extends Component {
    * @return {*}
    */
   copyComponent(component) {
-    if (!window.sessionStorage) {
+    if (!window.localStorage) {
       return console.warn('Session storage is not supported in this browser.');
     }
     this.addClass(this.refs.form, 'builder-paste-mode');
-    window.sessionStorage.setItem('formio.clipboard', JSON.stringify(component.schema));
+    window.localStorage.setItem('formio.clipboard', JSON.stringify(component.schema));
   }
 
   /**
@@ -1678,12 +1677,12 @@ export default class WebformBuilder extends Component {
    * @return {*}
    */
   pasteComponent(component) {
-    if (!window.sessionStorage) {
+    if (!window.localStorage) {
       return console.warn('Session storage is not supported in this browser.');
     }
     this.removeClass(this.refs.form, 'builder-paste-mode');
-    if (window.sessionStorage) {
-      const data = window.sessionStorage.getItem('formio.clipboard');
+    if (window.localStorage) {
+      const data = window.localStorage.getItem('formio.clipboard');
       if (data) {
         const schema = JSON.parse(data);
         const parent = this.getParentElement(component.element);
