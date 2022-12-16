@@ -127,6 +127,10 @@ export default class RadioComponent extends Field {
   }
 
   getValue() {
+    const micIcon=document.getElementById('mic-icon');
+		if (micIcon) {
+			micIcon.style.display='none';
+		}
     if (this.viewOnly || !this.refs.input || !this.refs.input.length) {
       return this.dataValue;
     }
