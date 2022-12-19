@@ -89,6 +89,10 @@ export default class SelectBoxesComponent extends RadioComponent {
   }
 
   getValue() {
+    const micIcon=document.getElementById('mic-icon');
+		if (micIcon) {
+			micIcon.style.display='none';
+		}
     if (this.viewOnly || !this.refs.input || !this.refs.input.length) {
       return this.dataValue;
     }

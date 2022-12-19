@@ -115,6 +115,10 @@ export default class CheckBoxComponent extends Field {
   }
 
   getValueAt(index) {
+    const micIcon=document.getElementById('mic-icon');
+		if (micIcon) {
+			micIcon.style.display='none';
+		}
     if (this.component.name) {
       return this.refs.input[index].checked ? this.component.value : '';
     }
