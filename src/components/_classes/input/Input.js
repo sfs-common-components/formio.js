@@ -316,9 +316,9 @@ export default class Input extends Multivalue {
   startVoiceRecognition(event) {
     try {
         event.stopImmediatePropagation();
-        const micIcon=document.getElementById(`voice-check-${this.component.id}`);
+        const micIcon=document.getElementById(`voice-check-${this.path}`);
         micIcon.style.color='#388e3c';
-				const SpeechRecognition = window.webkitSpeechRecognition;
+        const SpeechRecognition = window.webkitSpeechRecognition;
 
 				const recognition = new SpeechRecognition();
 				recognition.continuous = true;
@@ -341,8 +341,8 @@ export default class Input extends Multivalue {
           else {
             content=content.substring(0, start) + transcript + content.substr(start);
           }
-          micIcon.style.display='none';
           const result = recognition.stop();
+          micIcon.style.display='none';
           this.updateValue(content, { modified:true });
           this.redraw();
         }.bind(this);
@@ -355,15 +355,26 @@ export default class Input extends Multivalue {
     if (!this.builderMode && !this.component.builderEdit) {
       try {
         if (this.component.type==='textfield' || this.component.type==='textarea' || this.component.type==='number') {
-          const elem=document.getElementById(`voice-check-${this.component.id}`);
+          const currentElemId=`voice-check-${this.path}`;
+          const elem=document.getElementById(currentElemId);
           elem.style.display='grid';
+          const elemFocus = JSON.parse(sessionStorage.getItem('focusedElement'));
+          if (elemFocus) {
+            if (currentElemId!==elemFocus.elemIdIndexDB) {
+              const elementL=document.getElementById(elemFocus.elemIdIndexDB);
+              elementL.style.display='none';
+              sessionStorage.removeItem('focusedElement');
+            }
+          }
+          const compInSession = { elemIdIndexDB:`voice-check-${this.path}`, componentType: this.component.type };
+          sessionStorage.setItem('focusedElement', JSON.stringify(compInSession));
           //element.parentElement.appendChild(elem);
           elem.onclick=this.startVoiceRecognition.bind(this);
         }
-      } catch (error) {
-        
       }
-        
+      catch (error) {
+        console.log('Error occurred',error);
+      }
     }
     if (this.root.focusedComponent !== this) {
       if (this.root.pendingBlur) {
@@ -380,7 +391,9 @@ export default class Input extends Multivalue {
     }
   }
   addFocusBlurEvents(element) {
-    this.addEventListener(element, 'focus', (event)=>this.onfocusEvent(event, element));
+    this.addEventListener(element, 'focus', (event)=>{
+      this.onfocusEvent(event, element);
+    });
     this.addEventListener(element, 'blur', () => {
       this.root.pendingBlur = delay(() => {
         this.emit('blur', this);
