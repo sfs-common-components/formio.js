@@ -52,6 +52,7 @@ import tab from './tab';
 import table from './table';
 import tree from './tree';
 import treePartials from './tree/partials';
+import voiceModal from './voiceModal';
 import webform from './webform';
 import well from './well';
 import wizard from './wizard';
@@ -131,6 +132,7 @@ export default {
   table,
   tree,
   ...treePartials,
+  voiceModal,
   webform,
   well,
   wizard,
