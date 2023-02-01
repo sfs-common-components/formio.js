@@ -427,7 +427,12 @@ export default class Input extends Multivalue {
     }
   }
   addFocusBlurEvents(element) {
-    this.addEventListener(element, 'focus', (event)=>this.onfocusEvent(event, element));
+    if (element.matches(':focus')) {
+      this.onfocusEvent('', element);
+    }
+    this.addEventListener(element, 'focus', (event)=>{
+      this.onfocusEvent(event, element);
+    });
     this.addEventListener(element, 'blur', () => {
       this.root.pendingBlur = delay(() => {
         this.emit('blur', this);
