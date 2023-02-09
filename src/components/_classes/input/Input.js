@@ -319,7 +319,6 @@ export default class Input extends Multivalue {
       let content='',contentUpdated=this.getValue();
       const dialog = this.ce('div');
       this.setContent(dialog, this.renderTemplate('voiceModal'));
-
       // Add refs to dialog, not "this".
       dialog.refs = {};
       this.loadRefs.call(dialog, dialog, {
@@ -328,19 +327,24 @@ export default class Input extends Multivalue {
         modalOk: 'single',
         modalCancel: 'single',
         modalTranscriptContent: 'single',
+        modalClear: 'single',
+        modalMicIcon: 'single',
       });
       document.body.appendChild(dialog);
       dialog.refs.modalMain.style.display = 'flex';
-
       const micIcon = document.getElementById(`voice-check-${this.path}`);
+      const micButtonElem = document.getElementById(`voice-button-${this.path}`);
+      const micIconInModal = document.getElementById(`voice-modal-icon-${this.path}`);
       const el1 = document.getElementsByName(this.info?.attr?.name);
       const start = el1[0]?.selectionStart;
-      micIcon.style.color = '#388e3c';
       dialog.refs.modalTranscriptContent.value ='';
       const SpeechRecognition = window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.start();
+      micIcon.style.color = '#388e3c';
+      micButtonElem.style.border = 'solid #388e3c';
+      micIconInModal.style.color = '#388e3c';
       recognition.onresult = function(event) {
         const current = event.resultIndex;
         const transcript = event.results[current][0].transcript;
@@ -351,18 +355,43 @@ export default class Input extends Multivalue {
         content += transcript;
         micIcon.style.display = 'none';
         recognition.stop();
-        console.log('content=--', content);
-        dialog.refs.modalTranscriptContent.value =content;
+        dialog.refs.modalTranscriptContent.value = content;
+        micButtonElem.style.border = 'solid rgba(0, 0, 0, 0.54)';
+        micIconInModal.style.color = 'rgba(0, 0, 0, 0.54)';
       }.bind(this);
+      recognition.onend = () => {
+        micButtonElem.style.border = 'solid rgba(0, 0, 0, 0.54)';
+        micIconInModal.style.color = 'rgba(0, 0, 0, 0.54)';
+        dialog.refs.modalTranscriptContent.placeholder = 'Please click on the Mic to continue!';
+      };
+      dialog.refs.modalMicIcon.addEventListener('click', () => {
+        micButtonElem.style.border = 'solid #388e3c';
+        micIconInModal.style.color = '#388e3c';
+        dialog.refs.modalTranscriptContent.placeholder = 'Listening...';
+        const SpeechRecognition = window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.start();
+        recognition.onresult = function(event) {
+          const current = event.resultIndex;
+          const transcript = event.results[current][0].transcript;
+          recognition.stop();
+          micButtonElem.style.border = 'solid rgba(0, 0, 0, 0.54)';
+          micIconInModal.style.color = 'rgba(0, 0, 0, 0.54)';
+          const el2 = document.getElementById(`voice-textarea-${this.path}`);
+          const start = el2?.selectionStart;
+          if (start) {
+            dialog.refs.modalTranscriptContent.value = dialog.refs.modalTranscriptContent.value.substring(0, start) + transcript + dialog.refs.modalTranscriptContent.value.substr(start);
+          }
+          else {
+            dialog.refs.modalTranscriptContent.value += transcript;
+          }
+        }.bind(this);
+      });
       dialog.refs.modalOk.addEventListener('click', () => {
         dialog.refs.modalMain.style.display = 'none';
-        // if (this.component.type === 'number') {
-        //   contentUpdated += dialog.refs.modalTranscriptContent.value;
-        //   contentUpdated = Number(contentUpdated);
-        // }
-        // else {
+        recognition.stop();
         contentUpdated= contentUpdated.substring(0, start) + dialog.refs.modalTranscriptContent.value + contentUpdated.substr(start);
-        // }
         this.removeChildFrom(dialog, document.body);
         this.updateValue(contentUpdated, { modified: true });
         this.redraw();
@@ -377,6 +406,14 @@ export default class Input extends Multivalue {
         recognition.stop();
         this.removeChildFrom(dialog, document.body);
         return;
+      });
+      dialog.refs.modalClear.addEventListener('click', () => {
+        content = '';
+        dialog.refs.modalTranscriptContent.value = '';
+        recognition.stop();
+        micButtonElem.style.border = 'solid rgba(0, 0, 0, 0.54)';
+        micIconInModal.style.color = 'rgba(0, 0, 0, 0.54)';
+        dialog.refs.modalTranscriptContent.placeholder = 'Please click on the Mic to continue!';
       });
     }
     catch (error) {
