@@ -247,7 +247,7 @@ export default class DataGridComponent extends NestedArrayComponent {
 
   render() {
     const columns = this.getColumns();
-    let columnExtra = 0;
+    let columnExtra = 1;
     const hasRemoveButtons = this.hasRemoveButtons();
     if (this.component.reorder) {
       columnExtra++;
