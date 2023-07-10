@@ -60,6 +60,14 @@ export default [
     tooltip: 'Check this if you would like to "clone" the first row of components to all additional empty rows of the table.'
   },
   {
+    type: 'checkbox',
+    label: 'Allow Serial Number',
+    key: 'serialNumber',
+    input: true,
+    weight: 3,
+    tooltip: 'Check this if you would like to add serial number to all the rows of the table.'
+  },
+  {
     type: 'selectF',      //select is a custom component , in order to differentiate between form.io 's select component we have used 'selectF'
     label: 'Cell Alignment',
     key: 'cellAlignment',
@@ -81,7 +89,7 @@ export default [
     label: 'Striped',
     key: 'striped',
     tooltip: 'This will stripe the table if checked.',
-    input: true,
+    input: true,  
     weight: 701
   },
   {
