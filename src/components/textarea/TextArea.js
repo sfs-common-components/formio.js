@@ -431,21 +431,21 @@ export default class TextAreaComponent extends TextFieldComponent {
     const preventParentScroll = (element, changeSize) => {
       const nodeScrolls = [];
 
-      while (element && element.parentNode && element.parentNode instanceof Element) {
+     while (element && element.parentNode && element.parentNode instanceof Element) {
         if (element.parentNode.scrollTop) {
           nodeScrolls.push({
             node: element.parentNode,
             scrollTop: element.parentNode.scrollTop,
           });
         }
-        element = element.parentNode;
+       element = element.parentNode;
       }
 
       changeSize();
 
-      nodeScrolls.forEach((nodeScroll) => {
-        nodeScroll.node.scrollTop = nodeScroll.scrollTop;
-      });
+      // nodeScrolls.forEach((nodeScroll) => {
+      //   nodeScroll.node.scrollTop = nodeScroll.scrollTop;
+      // });
     };
 
     const resize = () => {
