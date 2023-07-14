@@ -10,6 +10,14 @@ export default [
   },
   {
     type: 'checkbox',
+    label: 'Allow Serial Number',
+    key: 'serialNumber',
+    tooltip: 'Check if you want to add serial number',
+    weight: 405,
+    input: true,
+  },
+  {
+    type: 'checkbox',
     label: 'Disable Adding Rows',
     key: 'disableAddingRows',
     tooltip: 'Check if you want to hide Add Another button',
