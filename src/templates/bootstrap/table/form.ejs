@@ -19,6 +19,9 @@
   <tbody>
     {% ctx.tableComponents.forEach(function(row, rowIndex) { %}
     <tr ref="row-{{ctx.id}}">
+      {% if(!ctx.builder && ctx.component.serialNumber) {%}
+      <td style="padding: 10px; vertical-align: middle; text-align: center;">{{rowIndex}}</td>
+    {% } %}
       {% row.forEach(function(column, colIndex) { %}
       <td ref="{{ctx.tableKey}}-{{rowIndex}}"{% if (ctx.cellClassName) { %} class="{{ctx.cellClassName}}"{% } %}>{{column}}</td>
       {% }) %}
