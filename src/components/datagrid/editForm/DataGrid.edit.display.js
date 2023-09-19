@@ -192,11 +192,11 @@ export default [
     conditional: { json: { var: 'data.enableRowGroups' } }
   },
   {
-    label: 'Initialize Empty',
+    label: 'Enable inline row editing',
     type: 'checkbox',
     input: true,
-    key: 'initEmpty',
-    tooltip: 'The DataGrid will have no visible rows when initialized.',
+    key: 'inlineEdit',
+    tooltip: 'All the rows will be disabled except the one which is editing.',
     weight: 450
   }
 ];
