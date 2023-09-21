@@ -8,7 +8,7 @@
     <tr>
       {% if (ctx.component.reorder) { %}<th></th>{% } %}
       {% if(!ctx.builder && ctx.component.serialNumber) { %}
-        <th style="width: 20px;vertical-align: middle; text-align: center;">Sr. No.</th>
+        <th style="width: 20px;vertical-align: middle; text-align: center;">{{ctx.t('Sr. No.')}}</th>
       {% } %}
       {% ctx.columns.forEach(function(col, index) { %}
       <th aria-label="{{ctx.component && ctx.component.widthOffsets && ctx.component.widthOffsets[ctx.component.key + index] && ctx.component.widthOffsets[ctx.component.key + index].includes('px') ? ctx.component.widthOffsets[ctx.component.key + index] : ctx.component.widthOffsets && ctx.component.widthOffsets[ctx.component.key + index] && ctx.component.widthOffsets[ctx.component.key + index]}}">
