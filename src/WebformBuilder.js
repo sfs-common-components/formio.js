@@ -8,6 +8,8 @@ import { fastCloneDeep, bootstrapVersion, getArrayFromComponentPath, getStringFr
 import { eachComponent, getComponent } from './utils/formUtils';
 import BuilderUtils from './utils/builder';
 import _ from 'lodash';
+import components from './components';
+
 require('./components/builder');
 
 let Templates = Formio.Templates;
@@ -1220,6 +1222,7 @@ export default class WebformBuilder extends Component {
 
   updateComponent(component, changed) {
     // Update the preview.
+
     if (this.preview) {
       this.preview.form = {
         components: [_.omit({ ...component }, [
@@ -1264,6 +1267,7 @@ export default class WebformBuilder extends Component {
           'customConditional',
           'id'
         ]));
+
         const parentComponent = defaultValueComponent.parent;
         let tabIndex = -1;
         let index = -1;
@@ -1277,7 +1281,6 @@ export default class WebformBuilder extends Component {
             return false;
           });
         });
-
         if (tabIndex !== -1 && index !== -1 && changed && changed.value) {
           const sibling = parentComponent.tabs[tabIndex][index + 1];
           parentComponent.removeComponent(defaultValueComponent);
@@ -1300,13 +1303,35 @@ export default class WebformBuilder extends Component {
         }
 
         _.set(this.preview._data, dataPath, changed.value);
-        _.set(this.webform._data, dataPath, changed.value);
+       _.set(this.webform._data, dataPath, changed.value);
       }
+    }
+
+    if (component.type==='datagrid' && component.enableRowGroups) {
+    let item;
+     if (component.defaultValue.length===1) {
+      item = component.defaultValue[0];
+      component.defaultValue.pop();
+     }
+    const rowGroups=component.rowGroups;
+let sum =0;
+
+    rowGroups.map((row)=>{
+    const  noofrowingroup=row.numberOfRows;
+     sum +=noofrowingroup;
+
+    for (let j=0; j<noofrowingroup; j++) {
+         if (component.defaultValue.length<sum) {
+          component.defaultValue.push({ ...item });
+         }
+        }
+    });
+      component.totalRows=sum ;
     }
 
     // Called when we update a component.
     this.emit('updateComponent', component);
-  }
+}
 
   findRepeatablePaths() {
     const repeatablePaths = [];
