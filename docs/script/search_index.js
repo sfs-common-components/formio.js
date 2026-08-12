@@ -8190,6 +8190,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/templates/bootstrap/speccomponent/index.js",
+    "file/src/templates/bootstrap/Speccomponent/index.js.html",
+    "src/templates/bootstrap/Speccomponent/index.js",
+    "file"
+  ],
+  [
     "src/templates/bootstrap/address/index.js",
     "file/src/templates/bootstrap/address/index.js.html",
     "src/templates/bootstrap/address/index.js",

@@ -258,6 +258,45 @@ export function checkSimpleConditional(component, condition, row, data) {
  * @param data
  * @returns {*}
  */
+const formatTime = (time) => moment(moment(time).format('HH:mm'), 'HH:mm');
+export const calculateValEvalSafeConstants = (calStr, extra) => {
+	try {
+		const fn = Function('_', 'moment', 'extra', `${calStr};return value;`);
+		const result = fn(_, moment, extra);
+		return result;
+	} catch (error) {
+		console.error('er---', error);
+		return '';
+	}
+};
+export function convertString(inputString) {
+	try {
+		const strArr = inputString.split(/[[|.]/);
+		let finalStr = '';
+		strArr.map((part) => {
+			const childStr = part.replace(/'|]/g, '');
+			if (childStr) {
+				if (isNaN(childStr)) finalStr = `${finalStr}['${childStr}']`;
+				else finalStr = `${finalStr}[${childStr}]`;
+			}
+		});
+
+		return finalStr;
+	} catch (error) {
+		return '';
+	}
+}
+export const evalSafe = (code, row = {}, data = {}) => {
+	try {
+		const r = row;
+		const d = data;
+		const fn = Function('moment', 'data', 'row', 'r', 'd', code);
+		const output = fn(moment, data, row, r, d);
+		return output;
+	} catch (error) {
+		console.error('error------', error, code);
+	}
+};
 export const methods = {
 	_MULTIPLY: (...args) => {
 		let multiply = 1;
@@ -271,7 +310,7 @@ export const methods = {
 				}
 			}
 		} else {
-			let dataArray = args[0];
+			const dataArray = args[0];
 			for (var i in dataArray) {
 				for (let argIndex = 1; argIndex < args.length; argIndex++) {
 					let colEleId = args[argIndex].replace('row.', '');
@@ -290,8 +329,8 @@ export const methods = {
 		}
 	},
 	_MINUS: (...args) => {
-		let num1 = args[0];
-		let num2 = args[1];
+		const num1 = args[0];
+		const num2 = args[1];
 		// 'if(isNaN(num1)){
 		// 'num1 = 0
 		// '}
@@ -316,7 +355,7 @@ export const methods = {
 				}
 			}
 		} else {
-			let dataArray = args[0];
+			const dataArray = args[0];
 			for (var i in dataArray) {
 				for (let argIndex = 1; argIndex < args.length; argIndex++) {
 					let colEleId = args[argIndex].replace('row.', '');
@@ -342,7 +381,7 @@ export const methods = {
 				}
 			}
 		} else {
-			let dataArray = args[0];
+			const dataArray = args[0];
 			for (var i in dataArray) {
 				for (let argIndex = 1; argIndex < args.length; argIndex++) {
 					let colEleId = args[argIndex].replace('row.', '');
@@ -361,9 +400,9 @@ export const methods = {
 		}
 	},
 	_PERCENTAGE: (...args) => {
-		let num1 = args[0];
-		let num2 = args[1];
-		let percentage = (num1 / num2) * 100;
+		const num1 = args[0];
+		const num2 = args[1];
+		const percentage = (num1 / num2) * 100;
 		if (isFinite(percentage)) {
 			return percentage;
 		} else {
@@ -371,9 +410,9 @@ export const methods = {
 		}
 	},
 	_DIVIDE: (...args) => {
-		let num1 = args[0];
-		let num2 = args[1];
-		let divide = Number(num1) / Number(num2);
+		const num1 = args[0];
+		const num2 = args[1];
+		const divide = Number(num1) / Number(num2);
 		if (isFinite(divide)) {
 			return divide;
 		} else {
@@ -392,7 +431,7 @@ export const methods = {
 							str +=
 								obj[propertyName] !== ''
 									? selectedArrayOrObj.length > 1 && obj != selectedArrayOrObj[0]
-										? ',' + obj[propertyName]
+										? `,${  obj[propertyName]}`
 										: obj[propertyName]
 									: obj[propertyName];
 						}
@@ -408,16 +447,7 @@ export const methods = {
 						str = calculateValEvalSafeConstants(`value =extra.selectedArrayOrObj${convertString(propertyName)}`, {
 							selectedArrayOrObj,
 						});
-					} else if (
-						selectedArrayOrObj &&
-						calculateValEvalSafeConstants(`value= extra.selectedArrayOrObj${convertString(propertyName)}`, {
-							selectedArrayOrObj,
-						})
-					) {
-						str = calculateValEvalSafeConstants(`value= extra.selectedArrayOrObj${convertString(propertyName)}`, {
-							selectedArrayOrObj,
-						});
-					}
+					} 
 				}
 			}
 			return str;
@@ -465,27 +495,27 @@ export const methods = {
 		return _if;
 	},
 	_STDEV: (...args) => {
-		let data = [];
+		const data = [];
 		if (typeof args[0] != 'object') {
-			for (let i in args) {
+			for (const i in args) {
 				if (!isNaN(args[i])) {
 					data.push(args[i]);
 				}
 			}
 		} else {
-			let dataArray = args[0];
-			for (let i in dataArray) {
+			const dataArray = args[0];
+			for (const i in dataArray) {
 				for (let argIndex = 1; argIndex < args.length; argIndex++) {
 					let colEleId = args[argIndex].replace('row.', '');
 					colEleId = colEleId.replace('r.', '');
-					let val = dataArray[i][colEleId];
+					const val = dataArray[i][colEleId];
 					if (!isNaN(val)) {
 						data.push(val);
 					}
 				}
 			}
 		}
-		let m = methods.getMean(data);
+		const m = methods.getMean(data);
 		return Math.sqrt(
 			data.reduce(function (sq, n) {
 				return sq + Math.pow(n - m, 2);
@@ -504,7 +534,7 @@ export const methods = {
 			}
 			average = sum / args.length;
 		} else {
-			let dataArray = args[0];
+			const dataArray = args[0];
 			let count = 0;
 			for (var i in dataArray) {
 				for (let argIndex = 1; argIndex < args.length; argIndex++) {
@@ -532,20 +562,20 @@ export const methods = {
 		if (typeof args[0] != 'object') {
 			condition = `${args[0]} ${args[1]}`;
 			for (let i = 2; i < args.length; i++) {
-				let val = args[i];
+				const val = args[i];
 				if (!isNaN(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
 					count += 1;
 					sum += Number(val);
 				}
 			}
 		} else {
-			let dataArray = args[0];
+			const dataArray = args[0];
 			condition = `${args[1]} ${args[2]}`;
 			for (var i in dataArray) {
 				for (let argIndex = 3; argIndex < args.length; argIndex++) {
 					let colEleId = args[argIndex].replace('row.', '');
 					colEleId = colEleId.replace('r.', '');
-					let val = dataArray[i][colEleId];
+					const val = dataArray[i][colEleId];
 					if (
 						!isNaN(val) &&
 						calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {
@@ -571,19 +601,19 @@ export const methods = {
 		if (typeof args[0] != 'object') {
 			condition = `${args[0]} ${args[1]}`;
 			for (let i = 2; i < args.length; i++) {
-				let val = args[i];
+				const val = args[i];
 				if (!isNaN(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
 					sum += Number(val);
 				}
 			}
 		} else {
-			let dataArray = args[0];
+			const dataArray = args[0];
 			condition = `${args[1]} ${args[2]}`;
 			for (var i in dataArray) {
 				for (let argIndex = 3; argIndex < args.length; argIndex++) {
 					let colEleId = args[argIndex].replace('row.', '');
 					colEleId = colEleId.replace('r.', '');
-					let val = dataArray[i][colEleId];
+					const val = dataArray[i][colEleId];
 					if (!isNaN(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
 						sum += Number(val);
 					}
@@ -595,8 +625,8 @@ export const methods = {
 	_COUNTIF: (...args) => {
 		let count = 0;
 		if (typeof args[0] != 'object') {
-			let comparisonValue = isNaN(args[1]) ? `'${args[1]}'` : args[1];
-			let condition = `${args[0]} ${comparisonValue}`;
+			const comparisonValue = isNaN(args[1]) ? `'${args[1]}'` : args[1];
+			const condition = `${args[0]} ${comparisonValue}`;
 			for (let i = 2; i < args.length; i++) {
 				let val = args[i];
 				if (isNaN(val) && !methods._ISEMPTY(val)) val = `'${val}'`;
@@ -605,9 +635,9 @@ export const methods = {
 				}
 			}
 		} else {
-			let comparisonValue = isNaN(args[2]) ? `'${args[2]}'` : args[2];
-			let condition = `${args[1]} ${comparisonValue}`;
-			let dataArray = args[0];
+			const comparisonValue = isNaN(args[2]) ? `'${args[2]}'` : args[2];
+			const condition = `${args[1]} ${comparisonValue}`;
+			const dataArray = args[0];
 			// let count = 0;
 			for (var i in dataArray) {
 				for (let argIndex = 3; argIndex < args.length; argIndex++) {
@@ -674,10 +704,10 @@ export const methods = {
 	},
 
 	_DataGridOR: (...args) => {
-		let dataArray = args[0];
-		let condition = args[1];
-		let value = args[2];
-		let keys = args.slice(3); // Extract keys
+		const dataArray = args[0];
+		const condition = args[1];
+		const value = args[2];
+		const keys = args.slice(3); // Extract keys
 
 		if (!Array.isArray(dataArray)) {
 			throw new Error('First argument must be an array (dataGrid)');
@@ -694,7 +724,7 @@ export const methods = {
 		// Determine whether the condition involves negation
 		const isNegation = condition.startsWith('!'); // Check for '!' negation
 
-		for (let row of dataArray) {
+		for (const row of dataArray) {
 			for (let key of keys) {
 				key = key.replace('r.', '').replace('row.', '');
 				let code;
@@ -724,10 +754,10 @@ export const methods = {
 	},
 
 	_DataGridAND: (...args) => {
-		let dataArray = args[0];
-		let condition = args[1];
-		let value = args[2];
-		let keys = args.slice(3); // Extract keys
+		const dataArray = args[0];
+		const condition = args[1];
+		const value = args[2];
+		const keys = args.slice(3); // Extract keys
 
 		if (!Array.isArray(dataArray)) {
 			throw new Error('First argument must be an array (dataGrid)');
@@ -744,7 +774,7 @@ export const methods = {
 		// Determine whether the condition involves negation
 		const isNegation = condition.startsWith('!'); // Check for '!' negation
 
-		for (let row of dataArray) {
+		for (const row of dataArray) {
 			for (let key of keys) {
 				let code;
 				key = key.replace('r.', '').replace('row.', '');
@@ -783,7 +813,7 @@ export const methods = {
 	},
 
 	_NOTBETWEEN: (...args) => {
-		if(methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1]) || methods._ISEMPTY(args[2])) return false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1]) || methods._ISEMPTY(args[2])) return false;
 		if (args.length > 2) {
 			if (Number(args[0]) < Number(args[1]) || Number(args[0]) > Number(args[2])) {
 				return true;
@@ -809,15 +839,15 @@ export const methods = {
 	// 	return values;
 	// },
 	_getValuesFromDatagrid: (...args) => {
-		let values = [];
-		let dataArray = args[0];
+		const values = [];
+		const dataArray = args[0];
 
 		const getNestedValue = (obj, path) => {
 			return path.split('.').reduce((acc, part) => acc && acc[part], obj);
 		};
 		for (let i = 0; i < dataArray.length; i++) {
 			for (let argIndex = 1; argIndex < args.length; argIndex++) {
-				let colEleId = args[argIndex].replace('row.', '').replace('r.', '');
+				const colEleId = args[argIndex].replace('row.', '').replace('r.', '');
 				const value = getNestedValue(dataArray[i], colEleId);
 				values.push(value);
 			}
@@ -1529,9 +1559,9 @@ export const methods = {
 		if (!isValidDate(args[0]) || !isValidDate(args[1]) ||args[2]==="") return '';
 			let startDate = moment(args[0])
 			let endDate = moment(args[1]) 
-		if(args[2]==="hours"||args[2]==="minutes"||args[2]==="seconds"){
+		if (args[2]==="hours"||args[2]==="minutes"||args[2]==="seconds") {
 			return endDate.diff(startDate, args[2])
-		}else{
+		} else {
 		startDate = moment(startDate).startOf('day'); // Set start date to midnight
 		endDate = moment(endDate).startOf('day');   // Set end date to midnight
 		return endDate.diff(startDate, args[2])
@@ -1541,8 +1571,8 @@ export const methods = {
 
 	_TIMEDIFF: (...args) => {
     if (!isValidDate(args[0]) || !isValidDate(args[1]) || args[2] === "") return '';
-    let startDate = moment(args[0]);
-    let endDate = moment(args[1]);
+    const startDate = moment(args[0]);
+    const endDate = moment(args[1]);
     const unit = args[2];
     if (unit === "minutes") {
         startDate.startOf('minute');
@@ -1557,9 +1587,9 @@ export const methods = {
 		if (!isValidDate(args[0]) || !isValidDate(args[1]) ||args[2]==="") return '';
 			let startDate = moment(args[0])
 			let endDate = moment(args[1]) 
-		if(args[2]==="hours"||args[2]==="minutes"||args[2]==="seconds"){
+		if (args[2]==="hours"||args[2]==="minutes"||args[2]==="seconds") {
 			return endDate.diff(startDate, args[2])
-		}else{
+		} else {
 		startDate = moment(startDate).startOf('day'); // Set start date to midnight
 		endDate = moment(endDate).startOf('day');   // Set end date to midnight
 		return endDate.diff(startDate, args[2])
@@ -1567,38 +1597,38 @@ export const methods = {
 	},
 	_HOURSDIFF: (...args) => {
 		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
-		let startDate = moment(args[0]).startOf('minute');
-		let endDate = moment(args[1]).startOf('minute');
+		const startDate = moment(args[0]).startOf('minute');
+		const endDate = moment(args[1]).startOf('minute');
 		return endDate.diff(startDate, 'hours');
 	},
 	_MINUTESDIFF: (...args) => {
 		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
-		let startDate = moment(args[0]).startOf('minute');
-		let endDate = moment(args[1]).startOf('minute');
+		const startDate = moment(args[0]).startOf('minute');
+		const endDate = moment(args[1]).startOf('minute');
 		return endDate.diff(startDate, 'minutes');
 	},
 	_SECONDSDIFF: (...args) => {
 		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
-		let startDate = moment(args[0]).startOf('seconds');
-		let endDate = moment(args[1]).startOf('seconds');
+		const startDate = moment(args[0]).startOf('seconds');
+		const endDate = moment(args[1]).startOf('seconds');
 		return endDate.diff(startDate, 'seconds');
 	},
 	_DAYSDIFF: (...args) => {
 		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
-		let startDate = moment(args[0]).startOf('day');
-		let endDate = moment(args[1]).startOf('day');
+		const startDate = moment(args[0]).startOf('day');
+		const endDate = moment(args[1]).startOf('day');
 		return endDate.diff(startDate, 'days');
 	},
 	_MONTHSDIFF: (...args) => {
 		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
-		let startDate = moment(args[0]).startOf('day')
-		let endDate = moment(args[1]).startOf('day');
+		const startDate = moment(args[0]).startOf('day')
+		const endDate = moment(args[1]).startOf('day');
 		return endDate.diff(startDate, 'months');
 	},
 	_YEARSDIFF: (...args) => {
 		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
-		let startDate = moment(args[0]).startOf('day');
-		let endDate = moment(args[1]).startOf('day');
+		const startDate = moment(args[0]).startOf('day');
+		const endDate = moment(args[1]).startOf('day');
 		return endDate.diff(startDate, 'years');
 	},
 
@@ -1612,28 +1642,28 @@ export const methods = {
 		if (!charData?.toleranceString) return false;
 
 		let isNotInRange = false;
-		let actionName = charData?.condition?.value;
-		let configuredAction = charData?.condition?.action || '';
+		const actionName = charData?.condition?.value;
+		const configuredAction = charData?.condition?.action || '';
 		let inputValues = analysisValues !== null && analysisValues !== undefined ? String(analysisValues) : '';
 
 		if (/^\s*\.\d+/.test(inputValues)) {
 			inputValues = inputValues.replace(/^\s*\./, '0.');
 		}
-		let targetLimit = Number(charData?.targetLimitValue);
-		let highLimitValue = Number(charData?.highLimitValue);
-		let lowerLimitValue = Number(charData?.lowerLimitValue);
+		const targetLimit = Number(charData?.targetLimitValue);
+		const highLimitValue = Number(charData?.highLimitValue);
+		const lowerLimitValue = Number(charData?.lowerLimitValue);
 
-		let alisQualtative = charData?.qualitativeAlias?.find((ele) =>
+		const alisQualtative = charData?.qualitativeAlias?.find((ele) =>
 			charData?.qualitativeTolerance?.some((mat) => mat?.name === ele?.value?.name)
 		);
 
 		if (charData?.toleranceType === 'Quantitative') {
 			const parsed = inputValues ? inputValues?.match(/^\s*(<=|>=|<|>|=|≥|≤|≠|!=)?\s*([+-]?\d+(\.\d+)?)/) : '';
-			let operator = parsed?.[1];
-			let inputValue = parsed ? parseFloat(parsed[2]) : null;
+			const operator = parsed?.[1];
+			const inputValue = parsed ? parseFloat(parsed[2]) : null;
 
 			// Fall back to condition action if no operator in input
-			let effectiveOperator = operator || configuredAction || '=';
+			const effectiveOperator = operator || configuredAction || '=';
 
 			const satisfies = (val, op, limit) => {
 				switch (op) {
@@ -1719,8 +1749,8 @@ export const methods = {
 			analysisValues !== '' &&
 			(charData?.toleranceType === 'Qualitative'
 				? Array.isArray(charData?.qualitativeTolerance) &&
-				  !charData.qualitativeTolerance.some((q) => q?.name?.trim() === analysisValues?.trim()) &&
-				  !alisQualtative?.alias?.some((q) => q?.name?.trim() === analysisValues?.trim())
+					!charData.qualitativeTolerance.some((q) => q?.name?.trim() === analysisValues?.trim()) &&
+					!alisQualtative?.alias?.some((q) => q?.name?.trim() === analysisValues?.trim())
 				: charData?.toleranceType === 'Descriptive'
 				? charData?.descriptiveTolerance && charData.descriptiveTolerance?.trim() !== analysisValues?.trim()
 				: true)

@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../../">
-  <title data-ice="title">src/templates/bootstrap/index.js | @smartfoodsafe/formiojs</title>
+  <base data-ice="baseUrl" href="../../../../../">
+  <title data-ice="title">src/templates/bootstrap/Speccomponent/index.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -172,154 +172,11 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/templates/bootstrap/index.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import address from &apos;./address&apos;;
-import builder from &apos;./builder&apos;;
-import builderComponent from &apos;./builderComponent&apos;;
-import builderComponents from &apos;./builderComponents&apos;;
-import builderEditForm from &apos;./builderEditForm&apos;;
-import builderPlaceholder from &apos;./builderPlaceholder&apos;;
-import builderSidebar from &apos;./builderSidebar&apos;;
-import builderSidebarGroup from &apos;./builderSidebarGroup&apos;;
-import builderWizard from &apos;./builderWizard&apos;;
-import button from &apos;./button&apos;;
-import checkbox from &apos;./checkbox&apos;;
-import columns from &apos;./columns&apos;;
-import component from &apos;./component&apos;;
-import componentModal from &apos;./componentModal&apos;;
-import components from &apos;./components&apos;;
-import tableComponents from &apos;./tableComponents&apos;;
-import container from &apos;./container&apos;;
-import datagrid from &apos;./datagrid&apos;;
-import day from &apos;./day&apos;;
-import dialog from &apos;./dialog&apos;;
-import editgrid from &apos;./editgrid&apos;;
-import editgridTable from &apos;./editgridTable&apos;;
-import field from &apos;./field&apos;;
-import fieldset from &apos;./fieldset&apos;;
-import file from &apos;./file&apos;;
-import html from &apos;./html&apos;;
-import icon from &apos;./icon&apos;;
-import iconClass from &apos;./iconClass&apos;;
-import input from &apos;./input&apos;;
-import label from &apos;./label&apos;;
-import loader from &apos;./loader&apos;;
-import loading from &apos;./loading&apos;;
-import map from &apos;./map&apos;;
-import message from &apos;./message&apos;;
-import modaldialog from &apos;./modaldialog&apos;;
-import modaledit from &apos;./modaledit&apos;;
-import modalPreview from &apos;./modalPreview&apos;;
-import multipleMasksInput from &apos;./multipleMasksInput&apos;;
-import multiValueRow from &apos;./multiValueRow&apos;;
-import multiValueTable from &apos;./multiValueTable&apos;;
-import panel from &apos;./panel&apos;;
-import pdf from &apos;./pdf&apos;;
-import pdfBuilder from &apos;./pdfBuilder&apos;;
-import pdfBuilderUpload from &apos;./pdfBuilderUpload&apos;;
-import radio from &apos;./radio&apos;;
-import resourceAdd from &apos;./resourceAdd&apos;;
-import select from &apos;./select&apos;;
-import selectOption from &apos;./selectOption&apos;;
-import signature from &apos;./signature&apos;;
-import survey from &apos;./survey&apos;;
-import tab from &apos;./tab&apos;;
-import table from &apos;./table&apos;;
-import tree from &apos;./tree&apos;;
-import treePartials from &apos;./tree/partials&apos;;
-import webform from &apos;./webform&apos;;
-import well from &apos;./well&apos;;
-import wizard from &apos;./wizard&apos;;
-import wizardHeader from &apos;./wizardHeader&apos;;
-import wizardHeaderClassic from &apos;./wizardHeaderClassic&apos;;
-import wizardHeaderVertical from &apos;./wizardHeaderVertical&apos;;
-import wizardNav from &apos;./wizardNav&apos;;
-import cssClasses from &apos;./cssClasses&apos;;
-import errorsList from &apos;./errorsList&apos;;
-import alert from &apos;./alert&apos;;
-import builderSidebarTab from &apos;./builderSidebarTab&apos;;
-import voiceModal from &apos;./voiceModal&apos;;
-import Speccomponent from &apos;./Speccomponent&apos;;
-export default {
-  transform(type, text) {
-    if (!text) {
-      return text;
-    }
-    switch (type) {
-      case &apos;class&apos;:
-        return this.cssClasses.hasOwnProperty(text.toString()) ? this.cssClasses[text.toString()] : text;
-    }
-    return text;
-  },
-  defaultIconset: &apos;fa&apos;,
-  iconClass,
-  cssClasses,
-  address,
-  builder,
-  builderComponent,
-  builderComponents,
-  builderEditForm,
-  builderPlaceholder,
-  builderSidebar,
-  builderSidebarGroup,
-  builderWizard,
-  button,
-  checkbox,
-  columns,
-  component,
-  componentModal,
-  components,
-  tableComponents,
-  container,
-  datagrid,
-  day,
-  dialog,
-  editgrid,
-  editgridTable,
-  field,
-  fieldset,
-  file,
-  html,
-  icon,
-  input,
-  label,
-  loader,
-  loading,
-  map,
-  message,
-  modaledit,
-  modaldialog,
-  modalPreview,
-  multipleMasksInput,
-  multiValueRow,
-  multiValueTable,
-  panel,
-  pdf,
-  pdfBuilder,
-  pdfBuilderUpload,
-  radio,
-  resourceAdd,
-  select,
-  selectOption,
-  signature,
-  survey,
-  tab,
-  table,
-  tree,
-  voiceModal,
-  ...treePartials,
-  webform,
-  well,
-  wizard,
-  wizardHeader,
-  wizardHeaderClassic,
-  wizardHeaderVertical,
-  wizardNav,
-  builderSidebarTab,
-  errorsList,
-  alert,
-  Speccomponent
-};
+<div class="content" data-ice="content"><h1 data-ice="title">src/templates/bootstrap/Speccomponent/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import form from &apos;./form.ejs&apos;;
+import html from &apos;./html.ejs&apos;;
+
+export default { form, html };
 </code></pre>
 
 </div>
