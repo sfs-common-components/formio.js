@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">src/components/radio/editForm/Radio.edit.data.js | formiojs</title>
+  <title data-ice="title">src/components/radio/editForm/Radio.edit.data.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -174,9 +173,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/radio/editForm/Radio.edit.data.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import BuilderUtils from &apos;../../../utils/builder&apos;;
-import _ from &apos;lodash&apos;;
-
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">
 export default [
   {
     key: &apos;multiple&apos;,
@@ -187,7 +184,8 @@ export default [
     input: true,
     label: &apos;Values&apos;,
     key: &apos;values&apos;,
-    tooltip: &apos;The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form.&apos;,
+    tooltip:
+      &apos;The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form.&apos;,
     weight: 10,
     reorder: true,
     defaultValue: [{ label: &apos;&apos;, value: &apos;&apos; }],
@@ -206,51 +204,53 @@ export default [
         allowCalculateOverride: true,
         calculateValue: { _camelCase: [{ var: &apos;row.label&apos; }] },
         validate: {
-          required: true
-        }
-      },
-      {
-        type: &apos;select&apos;,
-        input: true,
-        weight: 180,
-        label: &apos;Shortcut&apos;,
-        key: &apos;shortcut&apos;,
-        tooltip: &apos;The shortcut key for this option.&apos;,
-        dataSrc: &apos;custom&apos;,
-        valueProperty: &apos;value&apos;,
-        customDefaultValue: () =&gt; &apos;&apos;,
-        template: &apos;{{ item.label }}&apos;,
-        data: {
-          custom(context) {
-            return BuilderUtils.getAvailableShortcuts(
-              _.get(context, &apos;instance.options.editForm&apos;, {}),
-              _.get(context, &apos;instance.options.editComponent&apos;, {})
-            );
-          },
+          required: true,
         },
       },
+      // {
+      //   type: &apos;selectF&apos;,      //select is a custom component , in order to differentiate between form.io &apos;s select component we have used &apos;selectF&apos;
+      //   input: true,
+      //   weight: 180,
+      //   label: &apos;Shortcut&apos;,
+      //   key: &apos;shortcut&apos;,
+      //   tooltip: &apos;The shortcut key for this option.&apos;,
+      //   dataSrc: &apos;custom&apos;,
+      //   valueProperty: &apos;value&apos;,
+      //   customDefaultValue: () =&gt; &apos;&apos;,
+      //   template: &apos;{{ item.label }}&apos;,
+      //   data: {
+      //     custom(context) {
+      //       return BuilderUtils.getAvailableShortcuts(
+      //         _.get(context, &apos;instance.options.editForm&apos;, {}),
+      //         _.get(context, &apos;instance.options.editComponent&apos;, {})
+      //       );
+      //     },
+      //   },
+      // },
     ],
   },
-  {
-    type: &apos;select&apos;,
-    input: true,
-    label: &apos;Storage Type&apos;,
-    key: &apos;dataType&apos;,
-    clearOnHide: true,
-    tooltip: &apos;The type to store the data. If you select something other than autotype, it will force it to that type.&apos;,
-    weight: 12,
-    template: &apos;&lt;span&gt;{{ item.label }}&lt;/span&gt;&apos;,
-    dataSrc: &apos;values&apos;,
-    data: {
-      values: [
-        { label: &apos;Autotype&apos;, value: &apos;auto&apos; },
-        { label: &apos;String&apos;, value: &apos;string&apos; },
-        { label: &apos;Number&apos;, value: &apos;number&apos; },
-        { label: &apos;Boolean&apos;, value: &apos;boolean&apos; },
-        { label: &apos;Object&apos;, value: &apos;object&apos; },
-      ],
-    },
-  },
+
+  //tabs &amp; functionalities are removed
+  // {
+  //   type: &apos;select&apos;,
+  //   input: true,
+  //   label: &apos;Storage Type&apos;,
+  //   key: &apos;dataType&apos;,
+  //   clearOnHide: true,
+  //   tooltip: &apos;The type to store the data. If you select something other than autotype, it will force it to that type.&apos;,
+  //   weight: 12,
+  //   template: &apos;&lt;span&gt;{{ item.label }}&lt;/span&gt;&apos;,
+  //   dataSrc: &apos;values&apos;,
+  //   data: {
+  //     values: [
+  //       { label: &apos;Autotype&apos;, value: &apos;auto&apos; },
+  //       { label: &apos;String&apos;, value: &apos;string&apos; },
+  //       { label: &apos;Number&apos;, value: &apos;number&apos; },
+  //       { label: &apos;Boolean&apos;, value: &apos;boolean&apos; },
+  //       { label: &apos;Object&apos;, value: &apos;object&apos; },
+  //     ],
+  //   },
+  // },
 ];
 </code></pre>
 

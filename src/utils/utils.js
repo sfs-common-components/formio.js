@@ -1,3 +1,12 @@
+/* eslint-disable semi */
+/* eslint-disable quotes */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable brace-style */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-redeclare */
+/* eslint-disable block-scoped-var */
 /* global $ */
 
 import _ from 'lodash';
@@ -85,7 +94,6 @@ export function evaluate(func, args, ret, tokenize) {
         return _.get(args.data, $2);
       });
     }
-
     try {
       func = Evaluator.evaluator(func, args);
       args = _.values(args);
@@ -250,13 +258,1488 @@ export function checkSimpleConditional(component, condition, row, data) {
  * @param data
  * @returns {*}
  */
+export const methods = {
+	_MULTIPLY: (...args) => {
+		let multiply = 1;
+		let count = 0;
+		if (typeof args[0] != 'object') {
+			for (var i in args) {
+				//'if(!isNaN(Number(args[i]))){
+				if (args[i] !== '') {
+					count++;
+					multiply = multiply * Number(args[i]);
+				}
+			}
+		} else {
+			let dataArray = args[0];
+			for (var i in dataArray) {
+				for (let argIndex = 1; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					if (dataArray[i][colEleId] != '' && !isNaN(dataArray[i][colEleId])) {
+						count++;
+						multiply = multiply * Number(dataArray[i][colEleId]);
+					}
+				}
+			}
+		}
+		if (count >= 1) {
+			return multiply;
+		} else {
+			return '';
+		}
+	},
+	_MINUS: (...args) => {
+		let num1 = args[0];
+		let num2 = args[1];
+		// 'if(isNaN(num1)){
+		// 'num1 = 0
+		// '}
+		// 'if(isNaN(num2)){
+		// 'num2 = 0
+		// '}
+		// 'minus = num1 - num2;
+		// 'return minus;
+
+		if (num1 === '' || num2 === '') {
+			return '';
+		}
+		return Number(num1) - Number(num2);
+	},
+	_COUNT: (...args) => {
+		let count = '';
+		if (typeof args[0] != 'object') {
+			for (var i in args) {
+				//'if(!isNaN(args[i])){
+				if (args[i] !== '' && !isNaN(args[i])) {
+					count = Number(count) + 1;
+				}
+			}
+		} else {
+			let dataArray = args[0];
+			for (var i in dataArray) {
+				for (let argIndex = 1; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					if (dataArray[i][colEleId] != '' && !isNaN(dataArray[i][colEleId])) {
+						count = Number(count) + 1;
+					}
+				}
+			}
+		}
+		return count;
+	},
+	_SUM: (...args) => {
+		//(`value = _SUM(d.dataGrid,'r.number')+_SUM(d.dataGrid1,'r.number')`)
+		let sum = 0;
+		let count = 0;
+		if (typeof args[0] != 'object') {
+			for (var i in args) {
+				//'if(!isNaN(Number(args[i]))){
+				if (args[i] !== '' && !isNaN(Number(args[i]))) {
+					sum += Number(args[i]);
+					count += 1;
+				}
+			}
+		} else {
+			let dataArray = args[0];
+			for (var i in dataArray) {
+				for (let argIndex = 1; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					if (!isNaN(dataArray[i][colEleId])) {
+						count += 1;
+						sum += Number(dataArray[i][colEleId]);
+					}
+				}
+			}
+		}
+		if (count > 0) {
+			return sum;
+		} else {
+			return '';
+		}
+	},
+	_PERCENTAGE: (...args) => {
+		let num1 = args[0];
+		let num2 = args[1];
+		let percentage = (num1 / num2) * 100;
+		if (isFinite(percentage)) {
+			return percentage;
+		} else {
+			return '';
+		}
+	},
+	_DIVIDE: (...args) => {
+		let num1 = args[0];
+		let num2 = args[1];
+		let divide = Number(num1) / Number(num2);
+		if (isFinite(divide)) {
+			return divide;
+		} else {
+			return '';
+		}
+	},
+	_displaySelect: (...args) => {
+		let str = '';
+		try {
+			const selectedArrayOrObj = args[0];
+			const propertyName = args[1];
+			if (selectedArrayOrObj && propertyName) {
+				if (selectedArrayOrObj.length >= 0) {
+					selectedArrayOrObj.forEach((obj) => {
+						if (obj) {
+							str +=
+								obj[propertyName] !== ''
+									? selectedArrayOrObj.length > 1 && obj != selectedArrayOrObj[0]
+										? ',' + obj[propertyName]
+										: obj[propertyName]
+									: obj[propertyName];
+						}
+					});
+				} else {
+					//we have to convert this string ['countryOfOrigin[0].name'](propertyName) to ['countryOfOrigin'][0]['name'] otherwise we ll not be able to access to value it will check the key of that particular string,use convertString method to do so..
+					if (
+						selectedArrayOrObj &&
+						calculateValEvalSafeConstants(`value= extra.selectedArrayOrObj${convertString(propertyName)}`, {
+							selectedArrayOrObj,
+						})
+					) {
+						str = calculateValEvalSafeConstants(`value =extra.selectedArrayOrObj${convertString(propertyName)}`, {
+							selectedArrayOrObj,
+						});
+					} else if (
+						selectedArrayOrObj &&
+						calculateValEvalSafeConstants(`value= extra.selectedArrayOrObj${convertString(propertyName)}`, {
+							selectedArrayOrObj,
+						})
+					) {
+						str = calculateValEvalSafeConstants(`value= extra.selectedArrayOrObj${convertString(propertyName)}`, {
+							selectedArrayOrObj,
+						});
+					}
+				}
+			}
+			return str;
+		} catch (error) {
+			console.error('err-r-r--r', error);
+		}
+		return str;
+	},
+	//have doubt on it..
+	getMean: (data) => {
+		if (data.length === 0) return 0; //when data is empty then return 0
+		return (
+			data.reduce(function (a, b) {
+				return Number(a) + Number(b);
+			}) / data.length
+		);
+	},
+	_EQ: (...args) => {
+		let eq = false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1])) return;
+		eq = args[0] == args[1];
+		return eq;
+	},
+	_NE: (...args) => {
+		let ne = false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1])) return;
+		ne = args[0] != args[1];
+		return ne;
+	},
+	_LT: (...args) => {
+		let lt = false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1])) return;
+		lt = Number(args[0]) < Number(args[1]);
+		return lt;
+	},
+	_IF: (...args) => {
+		let _if = '';
+		if (methods._ISEMPTY(args[2])) {
+			args[2] = false;
+		}
+		if (methods._ISEMPTY(args[1])) {
+			args[1] = true;
+		}
+		_if = args[0] ? args[1] : args[2];
+		return _if;
+	},
+	_STDEV: (...args) => {
+		let data = [];
+		if (typeof args[0] != 'object') {
+			for (let i in args) {
+				if (!isNaN(args[i])) {
+					data.push(args[i]);
+				}
+			}
+		} else {
+			let dataArray = args[0];
+			for (let i in dataArray) {
+				for (let argIndex = 1; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					let val = dataArray[i][colEleId];
+					if (!isNaN(val)) {
+						data.push(val);
+					}
+				}
+			}
+		}
+		let m = methods.getMean(data);
+		return Math.sqrt(
+			data.reduce(function (sq, n) {
+				return sq + Math.pow(n - m, 2);
+			}, 0) /
+				(data.length - 1)
+		);
+	},
+	_AVERAGE: (...args) => {
+		let sum = 0;
+		let average = 0;
+		if (typeof args[0] != 'object') {
+			for (var i in args) {
+				if (!isNaN(Number(args[i]))) {
+					sum += Number(args[i]);
+				}
+			}
+			average = sum / args.length;
+		} else {
+			let dataArray = args[0];
+			let count = 0;
+			for (var i in dataArray) {
+				for (let argIndex = 1; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					if (!isNaN(dataArray[i][colEleId])) {
+						sum += Number(dataArray[i][colEleId]);
+						count++;
+					}
+				}
+			}
+			average = sum / count;
+		}
+		if (!isNaN(average)) {
+			return average;
+		}
+		return 0;
+	},
+	//need to check again
+	_AVERAGEIF: (...args) => {
+		let count = 0;
+		let condition = args[1];
+		let sum = 0;
+		let avg = 0;
+		if (typeof args[0] != 'object') {
+			condition = `${args[0]} ${args[1]}`;
+			for (let i = 2; i < args.length; i++) {
+				let val = args[i];
+				if (!isNaN(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
+					count += 1;
+					sum += Number(val);
+				}
+			}
+		} else {
+			let dataArray = args[0];
+			condition = `${args[1]} ${args[2]}`;
+			for (var i in dataArray) {
+				for (let argIndex = 3; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					let val = dataArray[i][colEleId];
+					if (
+						!isNaN(val) &&
+						calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {
+							val: val,
+							condition: condition,
+						})
+					) {
+						count += 1;
+						sum += Number(val);
+					}
+				}
+			}
+		}
+		avg = sum / count;
+		if (isNaN(avg)) {
+			return 0;
+		}
+		return avg;
+	},
+	_SUMIF(...args) {
+		let sum = 0;
+		let condition = args[1];
+		if (typeof args[0] != 'object') {
+			condition = `${args[0]} ${args[1]}`;
+			for (let i = 2; i < args.length; i++) {
+				let val = args[i];
+				if (!isNaN(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
+					sum += Number(val);
+				}
+			}
+		} else {
+			let dataArray = args[0];
+			condition = `${args[1]} ${args[2]}`;
+			for (var i in dataArray) {
+				for (let argIndex = 3; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					let val = dataArray[i][colEleId];
+					if (!isNaN(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
+						sum += Number(val);
+					}
+				}
+			}
+		}
+		return sum;
+	},
+	_COUNTIF: (...args) => {
+		let count = 0;
+		if (typeof args[0] != 'object') {
+			let comparisonValue = isNaN(args[1]) ? `'${args[1]}'` : args[1];
+			let condition = `${args[0]} ${comparisonValue}`;
+			for (let i = 2; i < args.length; i++) {
+				let val = args[i];
+				if (isNaN(val) && !methods._ISEMPTY(val)) val = `'${val}'`;
+				if (!methods._ISEMPTY(val) && calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})) {
+					count += 1;
+				}
+			}
+		} else {
+			let comparisonValue = isNaN(args[2]) ? `'${args[2]}'` : args[2];
+			let condition = `${args[1]} ${comparisonValue}`;
+			let dataArray = args[0];
+			// let count = 0;
+			for (var i in dataArray) {
+				for (let argIndex = 3; argIndex < args.length; argIndex++) {
+					let colEleId = args[argIndex].replace('row.', '');
+					colEleId = colEleId.replace('r.', '');
+					let val = dataArray[i][colEleId];
+					if (isNaN(val) && !methods._ISEMPTY(val)) val = `'${val}'`;
+					if (
+						!methods._ISEMPTY(val) &&
+						calculateValEvalSafeConstants(`let val= ${val}; value= ${val} ${condition}`, {})
+					) {
+						count += 1;
+					}
+				}
+			}
+		}
+		return count;
+	},
+	_LTE: (...args) => {
+		let lte = false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1])) return;
+		lte = Number(args[0]) <= Number(args[1]);
+		return lte;
+	},
+	_GT: (...args) => {
+		let gt = false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1])) return;
+		gt = Number(args[0]) > Number(args[1]);
+		return gt;
+	},
+	_GTE: (...args) => {
+		let gte = false;
+		if (methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1])) return;
+		gte = Number(args[0]) >= Number(args[1]);
+		return gte;
+	},
+	_AND: (...args) => {
+		let res = false;
+		for (let i = 0; i < args.length; i++) {
+			if (args[i]) {
+				res = true;
+			} else {
+				res = false;
+				break;
+			}
+		}
+		return res;
+	},
+	_OR: (...args) => {
+		let res = false;
+		for (let i = 0; i < args.length; i++) {
+			if (args[i]) {
+				res = true;
+				break;
+			} else {
+				res = false;
+			}
+		}
+		return res;
+	},
+
+	_NOT: (...args) => {
+		return !args[0];
+	},
+
+	_DataGridOR: (...args) => {
+		let dataArray = args[0];
+		let condition = args[1];
+		let value = args[2];
+		let keys = args.slice(3); // Extract keys
+
+		if (!Array.isArray(dataArray)) {
+			throw new Error('First argument must be an array (dataGrid)');
+		}
+		// Determine if value is an expression or a literal
+		let formattedValue;
+		if (typeof value === 'string' && isNaN(value) && !/^["'`].*["'`]$/.test(value)) {
+			// If value is a string and NOT enclosed in quotes, treat it as an expression or a field reference
+			formattedValue = `"${value}"`;
+		} else {
+			// If value is a string literal, number, or boolean, use JSON.stringify for proper formatting
+			formattedValue = JSON.stringify(value);
+		}
+		// Determine whether the condition involves negation
+		const isNegation = condition.startsWith('!'); // Check for '!' negation
+
+		for (let row of dataArray) {
+			for (let key of keys) {
+				key = key.replace('r.', '').replace('row.', '');
+				let code;
+
+				// Handle special conditions like 'includes' and 'isEmpty'
+				if (condition === 'includes' || (isNegation && condition.slice(1) === 'includes')) {
+					code = `r.${key}.includes(${formattedValue})`;
+					if (isNegation) {
+						code = `!(${code})`; // Negate the result
+					}
+				} else if (condition === 'isEmpty' || (isNegation && condition.slice(1) === 'isEmpty')) {
+					code = methods._ISEMPTY(row[key]);
+					if (isNegation) {
+						code = !code; // Negate the result
+					}
+				} else {
+					// For other conditions like ===, !==, >, <, etc.
+					code = `r.${key} ${condition} ${formattedValue}`;
+				}
+				if (evalSafe(`return ${code}`, row, {})) {
+					return true; // If any key in any row satisfies, return true
+				}
+			}
+		}
+
+		return false; // Return false only if no key in any row satisfies the condition
+	},
+
+	_DataGridAND: (...args) => {
+		let dataArray = args[0];
+		let condition = args[1];
+		let value = args[2];
+		let keys = args.slice(3); // Extract keys
+
+		if (!Array.isArray(dataArray)) {
+			throw new Error('First argument must be an array (dataGrid)');
+		}
+		// Determine if value is an expression or a literal
+		let formattedValue;
+		if (typeof value === 'string' && isNaN(value) && !/^["'`].*["'`]$/.test(value)) {
+			// If value is a string and NOT enclosed in quotes, treat it as an expression or a field reference
+			formattedValue = `"${value}"`;
+		} else {
+			// If value is a string literal, number, or boolean, use JSON.stringify for proper formatting
+			formattedValue = JSON.stringify(value);
+		}
+		// Determine whether the condition involves negation
+		const isNegation = condition.startsWith('!'); // Check for '!' negation
+
+		for (let row of dataArray) {
+			for (let key of keys) {
+				let code;
+				key = key.replace('r.', '').replace('row.', '');
+
+				// Handle special conditions like 'includes' and 'isEmpty'
+				if (condition === 'includes' || (isNegation && condition.slice(1) === 'includes')) {
+					code = `r.${key}.includes(${formattedValue})`;
+					if (isNegation) {
+						code = `!(${code})`; // Negate the result
+					}
+				} else if (condition === 'isEmpty' || (isNegation && condition.slice(1) === 'isEmpty')) {
+					code = methods._ISEMPTY(row[key]);
+					if (isNegation) {
+						code = !code; // Negate the result
+					}
+				} else {
+					// For other conditions like ===, !==, >, <, etc.
+					code = `r.${key} ${condition} ${formattedValue}`;
+				}
+				if (!evalSafe(`return ${code}`, row, {})) {
+					return false; // If any key fails for any row, return false
+				}
+			}
+		}
+
+		return true; // Only return true if all rows meet the condition
+	},
+
+	_BETWEEN: (...args) => {
+		if (args.length > 2) {
+			if (Number(args[0]) >= Number(args[1]) && Number(args[0]) <= Number(args[2])) {
+				return true;
+			}
+		}
+		return false;
+	},
+
+	_NOTBETWEEN: (...args) => {
+		if(methods._ISEMPTY(args[0]) || methods._ISEMPTY(args[1]) || methods._ISEMPTY(args[2])) return false;
+		if (args.length > 2) {
+			if (Number(args[0]) < Number(args[1]) || Number(args[0]) > Number(args[2])) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	_ISEMPTY: (...args) => {
+		return args[0] === '' || args[0] === null || args[0] === undefined || (_.isObject(args[0]) && _.isEmpty(args[0]));
+	},
+
+	// _getValuesFromDatagrid: (...args) => {
+	// 	let values = [];
+	// 	let dataArray = args[0];
+	// 	for (var i in dataArray) {
+	// 		for (let argIndex = 1; argIndex < args.length; argIndex++) {
+	// 			let colEleId = args[argIndex].replace('row.', '');
+	// 			colEleId = colEleId.replace('r.', '');
+	// 			values.push(dataArray[i][colEleId]);
+	// 		}
+	// 	}
+	// 	return values;
+	// },
+	_getValuesFromDatagrid: (...args) => {
+		let values = [];
+		let dataArray = args[0];
+
+		const getNestedValue = (obj, path) => {
+			return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+		};
+		for (let i = 0; i < dataArray.length; i++) {
+			for (let argIndex = 1; argIndex < args.length; argIndex++) {
+				let colEleId = args[argIndex].replace('row.', '').replace('r.', '');
+				const value = getNestedValue(dataArray[i], colEleId);
+				values.push(value);
+			}
+		}
+		return values;
+	},
+
+	_ANDComparision: (...args) => {
+		const [firstArray, method, second, extra] = args;
+
+		// if (typeof second !== 'object') {
+			for (const val of firstArray) {
+				let result = false;
+
+				switch (method) {
+					case 'includes':
+						result = val?.includes?.(second);
+						break;
+					case '!includes':
+						result = !val?.includes?.(second);
+						break;
+					case 'startsWith':
+						result = extra ? val?.[extra]?.startsWith?.(second) : val?.startsWith?.(second);
+						break;
+					case 'endsWith':
+						result = extra ? val?.[extra]?.endsWith?.(second) : val?.endsWith?.(second);
+						break;
+					case 'isEmpty':
+						result = methods._ISEMPTY(val);
+						break;
+					case '!isEmpty':
+						result = !methods._ISEMPTY(val);
+						break;
+					case 'EQ':
+						if (extra === 'selectboxes') {
+							result = val?.[second] === true;
+						} else if (extra === 'select') {
+							result = methods._EQ(val?.Name || val?.name, second);
+						} else if (extra) {
+							result = methods._EQ(val?.[extra], second);
+						} else {
+							result = methods._EQ(val, second);
+						}
+						break;
+					case 'NE':
+						if (extra === 'selectboxes') {
+							result = val?.[second] !== true;
+						} else if (extra === 'select') {
+							result = methods._NE(val?.Name || val?.name, second);
+						} else if (extra) {
+							result = methods._NE(val?.[extra], second);
+						} else {
+							result = methods._NE(val, second);
+						}
+						break;
+					case 'BETWEEN':
+					case 'NOTBETWEEN':
+					case 'TimeIsBetween':
+					case 'DateIsBetween':
+					case 'DateIsNotBetween':
+					case 'DateTimeIsBetween':
+					case 'DateTimeIsNotBetween':
+					case 'TimeIsNotBetween':
+						result = methods[`_${method}`](val, second, extra);
+						break;
+					case 'IsPreviousDay':
+					case 'IsNextDay':
+					case 'IsCurrentDay':
+					case 'IsPreviousWeek':
+					case 'IsCurrentWeek':
+					case 'IsNextWeek':
+					case 'IsPreviousMonth':
+					case 'IsCurrentMonth':
+					case 'IsNextMonth':
+					case 'IsPreviousYear':
+					case 'IsCurrentYear':
+					case 'IsNextYear':
+					case 'IsPast':
+					case 'IsFuture':
+					case 'DateTimeIsPast':
+					case 'DateTimeIsFuture':
+						result = methods[`_${method}`](val);
+						break;
+					case '!IsOfSelectedDate':
+						result = !methods._IsOfSelectedDate(val, second);
+						break;
+					case 'isEmptySelectBox':
+						result = methods._isEmptySelectBox(val);
+						break;
+					case '!isEmptySelectBox':
+						result = !methods._isEmptySelectBox(val);
+						break;
+					case 'IsPreviousDayBefore':
+						result = methods._IsPreviousDay(val) && methods._TimeIsBefore(val, second);
+						break;
+					case 'IsPreviousDayAfter':
+						result = methods._IsPreviousDay(val) && methods._TimeIsAfter(val, second);
+						break;
+					case 'IsPreviousDayAt':
+						result = methods._IsPreviousDay(val) && methods._TimeIsSame(val, second);
+						break;
+					case 'IsPreviousDayNotAt':
+						result = methods._IsPreviousDay(val) && methods._TimeIsNotSame(val, second);
+						break;
+					case 'IsCurrentDayBefore':
+						result = methods._IsCurrentDay(val) && methods._TimeIsBefore(val, second);
+						break;
+					case 'IsCurrentDayAfter':
+						result = methods._IsCurrentDay(val) && methods._TimeIsAfter(val, second);
+						break;
+					case 'IsCurrentDayAt':
+						result = methods._IsCurrentDay(val) && methods._TimeIsSame(val, second);
+						break;
+					case 'IsCurrentDayNotAt':
+						result = methods._IsCurrentDay(val) && methods._TimeIsNotSame(val, second);
+						break;
+					case 'IsNextDayBefore':
+						result = methods._IsNextDay(val) && methods._TimeIsBefore(val, second);
+						break;
+					case 'IsNextDayAfter':
+						result = methods._IsNextDay(val) && methods._TimeIsAfter(val, second);
+						break;
+					case 'IsNextDayAt':
+						result = methods._IsNextDay(val) && methods._TimeIsSame(val, second);
+						break;
+					case 'IsNextDayNotAt':
+						result = methods._IsNextDay(val) && methods._TimeIsNotSame(val, second);
+						break;
+					case 'IsPreviousDayBetween':
+						result = methods._IsPreviousDay(val) && methods._TimeIsBetween(val, second, extra);
+						break;
+					case 'IsPreviousDayNotBetween':
+						result = methods._IsPreviousDay(val) && methods._TimeIsNotBetween(val, second, extra);
+						break;
+					case 'IsCurrentDayBetween':
+						result = methods._IsCurrentDay(val) && methods._TimeIsBetween(val, second, extra);
+						break;
+					case 'IsCurrentDayNotBetween':
+						result = methods._IsCurrentDay(val) && methods._TimeIsNotBetween(val, second, extra);
+						break;
+					case 'IsNextDayBetween':
+						result = methods._IsNextDay(val) && methods._TimeIsBetween(val, second, extra);
+						break;
+					case 'IsNextDayNotBetween':
+						result = methods._IsNextDay(val) && methods._TimeIsNotBetween(val, second, extra);
+						break;
+					default:
+						result = methods[`_${method}`]?.(val, second);
+						break;
+				}
+
+				if (!result) return false;
+			}
+		// }
+		return true;
+	},
+	_ORComparision: (...args) => {
+		const [firstArray, method, second, extra] = args;
+
+		// if (typeof second !== 'object') {
+			for (const val of firstArray) {
+				let result = false;
+
+				switch (method) {
+					case 'includes':
+						result = val?.includes?.(second);
+						break;
+					case '!includes':
+						result = !val?.includes?.(second);
+						break;
+					case 'startsWith':
+						result = extra ? val?.[extra]?.startsWith?.(second) : val?.startsWith?.(second);
+						break;
+					case 'endsWith':
+						result = extra ? val?.[extra]?.endsWith?.(second) : val?.endsWith?.(second);
+						break;
+					case 'isEmpty':
+						result = methods._ISEMPTY(val);
+						break;
+					case '!isEmpty':
+						result = !methods._ISEMPTY(val);
+						break;
+					case 'EQ':
+						if (extra === 'selectboxes') {
+							result = val?.[second] === true;
+						} else if (extra === 'select') {
+							result = methods._EQ(val?.Name || val?.name, second);
+						} else if (extra) {
+							result = methods._EQ(val?.[extra], second);
+						} else {
+							result = methods._EQ(val, second);
+						}
+						break;
+					case 'NE':
+						if (extra === 'selectboxes') {
+							result = val?.[second] !== true;
+						} else if (extra === 'select') {
+							result = methods._NE(val?.Name || val?.name, second);
+						} else if (extra) {
+							result = methods._NE(val?.[extra], second);
+						} else {
+							result = methods._NE(val, second);
+						}
+						break;
+					case 'BETWEEN':
+					case 'NOTBETWEEN':
+					case 'TimeIsBetween':
+					case 'DateIsBetween':
+					case 'DateIsNotBetween':
+					case 'DateTimeIsBetween':
+					case 'DateTimeIsNotBetween':
+					case 'TimeIsNotBetween':
+						result = methods[`_${method}`](val, second, extra);
+						break;
+					case 'IsPreviousDay':
+					case 'IsNextDay':
+					case 'IsCurrentDay':
+					case 'IsPreviousWeek':
+					case 'IsCurrentWeek':
+					case 'IsNextWeek':
+					case 'IsPreviousMonth':
+					case 'IsCurrentMonth':
+					case 'IsNextMonth':
+					case 'IsPreviousYear':
+					case 'IsCurrentYear':
+					case 'IsNextYear':
+					case 'IsPast':
+					case 'IsFuture':
+					case 'DateTimeIsPast':
+					case 'DateTimeIsFuture':
+						result = methods[`_${method}`](val);
+						break;
+					case '!IsOfSelectedDate':
+						result = !methods._IsOfSelectedDate(val, second);
+						break;
+					case 'isEmptySelectBox':
+						result = methods._isEmptySelectBox(val);
+						break;
+					case '!isEmptySelectBox':
+						result = !methods._isEmptySelectBox(val);
+						break;
+					case 'IsPreviousDayBefore':
+						result = methods._IsPreviousDay(val) && methods._TimeIsBefore(val, second);
+						break;
+					case 'IsPreviousDayAfter':
+						result = methods._IsPreviousDay(val) && methods._TimeIsAfter(val, second);
+						break;
+					case 'IsPreviousDayAt':
+						result = methods._IsPreviousDay(val) && methods._TimeIsSame(val, second);
+						break;
+					case 'IsPreviousDayNotAt':
+						result = methods._IsPreviousDay(val) && methods._TimeIsNotSame(val, second);
+						break;
+					case 'IsCurrentDayBefore':
+						result = methods._IsCurrentDay(val) && methods._TimeIsBefore(val, second);
+						break;
+					case 'IsCurrentDayAfter':
+						result = methods._IsCurrentDay(val) && methods._TimeIsAfter(val, second);
+						break;
+					case 'IsCurrentDayAt':
+						result = methods._IsCurrentDay(val) && methods._TimeIsSame(val, second);
+						break;
+					case 'IsCurrentDayNotAt':
+						result = methods._IsCurrentDay(val) && methods._TimeIsNotSame(val, second);
+						break;
+					case 'IsNextDayBefore':
+						result = methods._IsNextDay(val) && methods._TimeIsBefore(val, second);
+						break;
+					case 'IsNextDayAfter':
+						result = methods._IsNextDay(val) && methods._TimeIsAfter(val, second);
+						break;
+					case 'IsNextDayAt':
+						result = methods._IsNextDay(val) && methods._TimeIsSame(val, second);
+						break;
+					case 'IsNextDayNotAt':
+						result = methods._IsNextDay(val) && methods._TimeIsNotSame(val, second);
+						break;
+					case 'IsPreviousDayBetween':
+						result = methods._IsPreviousDay(val) && methods._TimeIsBetween(val, second, extra);
+						break;
+					case 'IsPreviousDayNotBetween':
+						result = methods._IsPreviousDay(val) && methods._TimeIsNotBetween(val, second, extra);
+						break;
+					case 'IsCurrentDayBetween':
+						result = methods._IsCurrentDay(val) && methods._TimeIsBetween(val, second, extra);
+						break;
+					case 'IsCurrentDayNotBetween':
+						result = methods._IsCurrentDay(val) && methods._TimeIsNotBetween(val, second, extra);
+						break;
+					case 'IsNextDayBetween':
+						result = methods._IsNextDay(val) && methods._TimeIsBetween(val, second, extra);
+						break;
+					case 'IsNextDayNotBetween':
+						result = methods._IsNextDay(val) && methods._TimeIsNotBetween(val, second, extra);
+						break;
+					default:
+						result = methods[`_${method}`]?.(val, second);
+						break;
+				}
+
+				if (result) return true;
+			}
+		// }
+		return false;
+	},
+
+	_IsAnyOneOf: (value, acceptedValues = []) => {
+		if (!Array.isArray(acceptedValues) || acceptedValues.length === 0) return false;
+
+		const cleanedValues = (Array.isArray(value) ? value : [value]).filter((val) => !methods._ISEMPTY(val));
+		const cleanedAcceptedValues = acceptedValues.filter((val) => !methods._ISEMPTY(val));
+
+		if (cleanedValues.length === 0 || cleanedAcceptedValues.length === 0) return false;
+
+		// Loose equality check with all accepted values
+		return cleanedValues.some(
+			(val) => cleanedAcceptedValues.some((acc) => acc == val) // loose equality
+		);
+	},
+
+	_IsNoneOf: (value, disallowedValues = []) => {
+		// Ensure disallowedValues is a non-empty array
+		if (!Array.isArray(disallowedValues) || disallowedValues.length === 0) return false;
+
+		const values = (Array.isArray(value) ? value : [value]).filter((v) => !methods._ISEMPTY(v));
+		const disallowed = disallowedValues.filter((d) => !methods._ISEMPTY(d));
+
+		if (values.length === 0 || disallowed.length === 0) return false;
+
+		// None of the values should exist in disallowed list
+		return !values.some((v) => disallowed.some((d) => v == d));
+	},
+
+	_TimeIsSame: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return false;
+		return formatTime(args[0]).isSame(formatTime(args[1]));
+	},
+
+	_TimeIsNotSame: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return false;
+		return !formatTime(args[0]).isSame(formatTime(args[1]));
+	},
+
+	_TimeIsBetween: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1]) || !isValidDate(args[2])) return false;
+		return formatTime(args[0]).isBetween(formatTime(args[1]), formatTime(args[2]), undefined, '[]');
+	},
+
+	_TimeIsBefore: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return false;
+		return formatTime(args[0]).isBefore(formatTime(args[1]));
+	},
+
+	_TimeIsAfter: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return false;
+		return formatTime(args[0]).isAfter(formatTime(args[1]));
+	},
+
+	_DateIsBetween: (...args) => {
+		const [key, startDate, endDate] = args;
+		if (!isValidDate(key) || !isValidDate(startDate) || !isValidDate(endDate)) return false;
+		return (
+			moment(key).startOf('day').isSameOrAfter(moment(startDate).startOf('day')) &&
+			moment(key).startOf('day').isSameOrBefore(moment(endDate).startOf('day'))
+		);
+	},
+
+	_DateIsNotBetween: (...args) => {
+		const [key, startDate, endDate] = args;
+		if (!isValidDate(key) || !isValidDate(startDate) || !isValidDate(endDate)) return false;
+		return (
+			moment(key).startOf('day').isBefore(moment(startDate).startOf('day')) ||
+			moment(key).startOf('day').isAfter(moment(endDate).startOf('day'))
+		);
+	},
+
+	_IsOfSelectedDate: (...args) => {
+		const [key, date] = args;
+		if (!isValidDate(key) || !isValidDate(date)) return false;
+		return moment(key).startOf('day').isSame(moment(date).startOf('day'), 'day');
+	},
+
+	_IsPreviousDay: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').subtract(1, 'days'));
+	},
+
+	_IsNextDay: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').add(1, 'days'));
+	},
+
+	_IsCurrentDay: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day'));
+	},
+
+	_IsBeforeXDays: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || !value) return false;
+		return moment(key).startOf('day').isBefore(moment().startOf('day').subtract(value, 'days'));
+	},
+
+	_IsBefore: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || !isValidDate(value)) return false;
+		return moment(key).startOf('day').isBefore(moment(value).startOf('day'));
+	},
+
+	_IsAfterXDays: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || methods._ISEMPTY(value)) return false;
+		return moment(key).startOf('day').isAfter(moment().startOf('day').add(value, 'days'));
+	},
+
+	_IsPreviousWeek: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').subtract(1, 'weeks'), 'week');
+	},
+
+	_IsCurrentWeek: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day'), 'week');
+	},
+
+	_IsNextWeek: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').add(1, 'weeks'), 'week');
+	},
+
+	_IsPreviousMonth: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').subtract(1, 'months'), 'month');
+	},
+
+	_IsCurrentMonth: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day'), 'month');
+	},
+
+	_IsNextMonth: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').add(1, 'months'), 'month');
+	},
+
+	_IsPreviousYear: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').subtract(1, 'years'), 'year');
+	},
+
+	_IsCurrentYear: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day'), 'year');
+	},
+
+	_IsNextYear: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isSame(moment().startOf('day').add(1, 'years'), 'year');
+	},
+
+	_MonthIs: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || methods._ISEMPTY(value)) return false;
+		return moment(key).startOf('day').month() === value - 1;
+	},
+
+	_YearIs: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || methods._ISEMPTY(value)) return false;
+		return moment(key).startOf('day').year() == value;
+	},
+
+	_IsPast: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isBefore(moment().startOf('day'));
+	},
+
+	_IsFuture: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).startOf('day').isAfter(moment().startOf('day'));
+	},
+
+	_isEmptySelectBox: (obj) => {
+		if (!obj || typeof obj !== 'object') return true; // treat null/undefined as empty
+		return Object.values(obj).every((val) => !val);
+	},
+
+	_DateTimeIsSame: (...args) => {
+		const [a, b] = args;
+		if (!isValidDate(a) || !isValidDate(b)) return false;
+		return moment(a).isSame(moment(b));
+	},
+
+	_DateTimeIsNotSame: (...args) => {
+		const [a, b] = args;
+		if (!isValidDate(a) || !isValidDate(b)) return false;
+		return !moment(a).isSame(moment(b));
+	},
+
+	_DateTimeIsLessThan: (a, b) => {
+		if (!isValidDate(a) || !isValidDate(b)) return false;
+		return moment(a).isBefore(moment(b));
+	},
+
+	_DateTimeIsGreaterThan: (a, b) => {
+		if (!isValidDate(a) || !isValidDate(b)) return false;
+		return moment(a).isAfter(moment(b));
+	},
+
+	_DateTimeIsLessThanOrEqual: (a, b) => {
+		if (!isValidDate(a) || !isValidDate(b)) return false;
+		return moment(a).isSameOrBefore(moment(b));
+	},
+
+	_DateTimeIsGreaterThanOrEqual: (a, b) => {
+		if (!isValidDate(a) || !isValidDate(b)) return false;
+		return moment(a).isSameOrAfter(moment(b));
+	},
+
+	_DateTimeIsPast: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).isBefore(moment());
+	},
+
+	_DateTimeIsFuture: (key) => {
+		if (!isValidDate(key)) return false;
+		return moment(key).isAfter(moment());
+	},
+
+	_DayIs: (key, day) => {
+		if (!isValidDate(key) || methods._ISEMPTY(day)) return false;
+		return moment(key).day() === day - 1;
+	},
+
+	_DayIsNot: (key, day) => {
+		if (!isValidDate(key) || methods._ISEMPTY(day)) return false;
+		return moment(key).day() !== day - 1;
+	},
+
+	_IsAnyOfSelectedDays: (key, selectedDays = []) => {
+		if (!isValidDate(key) || !Array.isArray(selectedDays) || selectedDays.length === 0) return false;
+
+		const keyDay = moment(key).day();
+
+		return selectedDays.some(day => day == keyDay + 1);
+	},
+
+	_IsNoneOfSelectedDays: (key, selectedDays = []) => {
+		if (!isValidDate(key) || !Array.isArray(selectedDays) || selectedDays.length === 0) return false;
+
+		const keyDay = moment(key).day() + 1;
+
+		for (const val of selectedDays) {
+			const dayNum = Number(val);
+			if (!val || isNaN(dayNum)) {
+				return false; // Found invalid or empty month
+			}
+			if (keyDay === dayNum) {
+				return false; // Match found, not "none of"
+			}
+		}
+
+		return true; // All valid and none matched
+	},
+
+	_IsAnyOfSelectedMonth: (key, selectedMonths = []) => {
+		if (!isValidDate(key) || !Array.isArray(selectedMonths) || selectedMonths.length === 0) return false;
+
+		// moment().month() returns 0 for January, 1 for February, ..., 11 for December
+		const keyMonth = moment(key).month() + 1; // Convert to 1-based (1=Jan, 12=Dec)
+
+		return selectedMonths.some(month => month == keyMonth);
+	},
+
+	_IsNoneOfSelectedMonth: (key, selectedMonths = []) => {
+		if (!isValidDate(key) || !Array.isArray(selectedMonths) || selectedMonths.length === 0) return false;
+
+		const keyMonth = moment(key).month() + 1;
+
+		for (const val of selectedMonths) {
+			const monthNum = Number(val);
+			if (!val || isNaN(monthNum)) {
+				return false; // Found invalid or empty month
+			}
+			if (keyMonth === monthNum) {
+				return false; // Match found, not "none of"
+			}
+		}
+
+		return true; // All valid and none matched
+	},
+
+	_DateTimeIsBetween: (...args) => {
+		const [key, startDate, endDate] = args;
+		if (!isValidDate(key) || !isValidDate(startDate) || !isValidDate(endDate)) return false;
+		return moment(key).isSameOrAfter(moment(startDate)) && moment(key).isSameOrBefore(moment(endDate));
+	},
+
+	_DateTimeIsNotBetween: (...args) => {
+		const [key, startDate, endDate] = args;
+		if (!isValidDate(key) || !isValidDate(startDate) || !isValidDate(endDate)) return false;
+		return moment(key).isBefore(moment(startDate)) || moment(key).isAfter(moment(endDate));
+	},
+
+	_TimeIsNotBetween: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1]) || !isValidDate(args[2])) return false;
+		return !formatTime(args[0]).isBetween(formatTime(args[1]), formatTime(args[2]), undefined, '[]');
+	},
+
+	_DateTimeIsAnyOneOf: (...args) => {
+		if (!isValidDate(args[0]) || !Array.isArray(args[1])) return false;
+
+		const validValues = args[1].filter((val) => isValidDate(val));
+		if (validValues.length === 0) return false;
+
+		const input = moment(args[0]);
+		return validValues.some((val) => input.isSame(moment(val)));
+	},
+
+	_DateTimeIsNoneOf: (...args) => {
+		if (!isValidDate(args[0]) || !Array.isArray(args[1]) || args[1].length === 0) return false;
+
+		const input = moment(args[0]);
+
+		for (const val of args[1]) {
+			if (!isValidDate(val)) {
+				return false; // Invalid or missing value found
+			}
+			if (input.isSame(moment(val))) {
+				return false; // Match found, not "none of"
+			}
+		}
+
+		return true; // All valid and none matched
+	},
+
+	_DateIsAnyOneOf: (...args) => {
+		if (!isValidDate(args[0]) || !Array.isArray(args[1])) return false;
+
+		const validDates = args[1].filter((val) => isValidDate(val));
+		if (validDates.length === 0) return false;
+
+		const input = moment(args[0]);
+		return validDates.some((val) => input.isSame(moment(val), 'day'));
+	},
+
+	_DateIsNoneOf: (...args) => {
+		if (!isValidDate(args[0]) || !Array.isArray(args[1]) || args[1].length === 0) return false;
+
+		const input = moment(args[0]);
+
+		for (const val of args[1]) {
+			if (!isValidDate(val)) {
+				return false; // Invalid or missing value found
+			}
+			if (input.isSame(moment(val), 'day')) {
+				return false; // Match found, not "none of"
+			}
+		}
+
+		return true; // All valid and none matched
+	},
+
+	_TimeIsAnyOneOf: (...args) => {
+		if (!isValidDate(args[0]) || !Array.isArray(args[1])) return false;
+
+		const validTimes = args[1].filter((val) => isValidDate(val));
+		if (validTimes.length === 0) return false;
+
+		const inputTime = formatTime(args[0]);
+		return validTimes.some((val) => inputTime.isSame(formatTime(val)));
+	},
+
+	_TimeIsNoneOf: (...args) => {
+		if (!isValidDate(args[0]) || !Array.isArray(args[1]) || args[1].length === 0) return false;
+
+		const input = formatTime(args[0]);
+
+		for (const val of args[1]) {
+			if (!isValidDate(val)) {
+				return false; // Invalid or missing value found
+			}
+			if (input.isSame(formatTime(val))) {
+				return false; // Match found, not "none of"
+			}
+		}
+
+		return true; // All valid and none matched
+	},
+
+	_IsAfter: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || !isValidDate(value)) return false;
+		return moment(key).startOf('day').isAfter(moment(value).startOf('day'));
+	},
+
+	_DateIsLessThanOrEqual: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || !isValidDate(value)) return false;
+		return moment(key).startOf('day').isSameOrBefore(moment(value).startOf('day'));
+	},
+
+	_DateIsGreaterThanOrEqual: (...args) => {
+		const [key, value] = args;
+		if (!isValidDate(key) || !isValidDate(value)) return false;
+		return moment(key).startOf('day').isSameOrAfter(moment(value).startOf('day'));
+	},
+	_DATEDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1]) ||args[2]==="") return '';
+			let startDate = moment(args[0])
+			let endDate = moment(args[1]) 
+		if(args[2]==="hours"||args[2]==="minutes"||args[2]==="seconds"){
+			return endDate.diff(startDate, args[2])
+		}else{
+		startDate = moment(startDate).startOf('day'); // Set start date to midnight
+		endDate = moment(endDate).startOf('day');   // Set end date to midnight
+		return endDate.diff(startDate, args[2])
+		}
+	},
+
+
+	_TIMEDIFF: (...args) => {
+    if (!isValidDate(args[0]) || !isValidDate(args[1]) || args[2] === "") return '';
+    let startDate = moment(args[0]);
+    let endDate = moment(args[1]);
+    const unit = args[2];
+    if (unit === "minutes") {
+        startDate.startOf('minute');
+        endDate.startOf('minute');
+    }
+    if (unit === "hours" || unit === "minutes") {
+        return endDate.diff(startDate, unit);
+    }
+},
+
+	_DATETIMEDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1]) ||args[2]==="") return '';
+			let startDate = moment(args[0])
+			let endDate = moment(args[1]) 
+		if(args[2]==="hours"||args[2]==="minutes"||args[2]==="seconds"){
+			return endDate.diff(startDate, args[2])
+		}else{
+		startDate = moment(startDate).startOf('day'); // Set start date to midnight
+		endDate = moment(endDate).startOf('day');   // Set end date to midnight
+		return endDate.diff(startDate, args[2])
+		}
+	},
+	_HOURSDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
+		let startDate = moment(args[0]).startOf('minute');
+		let endDate = moment(args[1]).startOf('minute');
+		return endDate.diff(startDate, 'hours');
+	},
+	_MINUTESDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
+		let startDate = moment(args[0]).startOf('minute');
+		let endDate = moment(args[1]).startOf('minute');
+		return endDate.diff(startDate, 'minutes');
+	},
+	_SECONDSDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
+		let startDate = moment(args[0]).startOf('seconds');
+		let endDate = moment(args[1]).startOf('seconds');
+		return endDate.diff(startDate, 'seconds');
+	},
+	_DAYSDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
+		let startDate = moment(args[0]).startOf('day');
+		let endDate = moment(args[1]).startOf('day');
+		return endDate.diff(startDate, 'days');
+	},
+	_MONTHSDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
+		let startDate = moment(args[0]).startOf('day')
+		let endDate = moment(args[1]).startOf('day');
+		return endDate.diff(startDate, 'months');
+	},
+	_YEARSDIFF: (...args) => {
+		if (!isValidDate(args[0]) || !isValidDate(args[1])) return '';
+		let startDate = moment(args[0]).startOf('day');
+		let endDate = moment(args[1]).startOf('day');
+		return endDate.diff(startDate, 'years');
+	},
+
+	_NEG: (...args) => {
+		if (!isNaN(args[0])) return -Number(args[0]);
+	},
+
+	_OUTOFRANGE: (charData, analysisValues) => {
+		// console.log('row',charData, analysisValues );
+		if (charData?.hasOwnProperty('isOutOfSpec')) return charData.isOutOfSpec;
+		if (!charData?.toleranceString) return false;
+
+		let isNotInRange = false;
+		let actionName = charData?.condition?.value;
+		let configuredAction = charData?.condition?.action || '';
+		let inputValues = analysisValues !== null && analysisValues !== undefined ? String(analysisValues) : '';
+
+		if (/^\s*\.\d+/.test(inputValues)) {
+			inputValues = inputValues.replace(/^\s*\./, '0.');
+		}
+		let targetLimit = Number(charData?.targetLimitValue);
+		let highLimitValue = Number(charData?.highLimitValue);
+		let lowerLimitValue = Number(charData?.lowerLimitValue);
+
+		let alisQualtative = charData?.qualitativeAlias?.find((ele) =>
+			charData?.qualitativeTolerance?.some((mat) => mat?.name === ele?.value?.name)
+		);
+
+		if (charData?.toleranceType === 'Quantitative') {
+			const parsed = inputValues ? inputValues?.match(/^\s*(<=|>=|<|>|=|≥|≤|≠|!=)?\s*([+-]?\d+(\.\d+)?)/) : '';
+			let operator = parsed?.[1];
+			let inputValue = parsed ? parseFloat(parsed[2]) : null;
+
+			// Fall back to condition action if no operator in input
+			let effectiveOperator = operator || configuredAction || '=';
+
+			const satisfies = (val, op, limit) => {
+				switch (op) {
+					case '<':
+						return operator === configuredAction
+							? val <= limit && op == configuredAction
+							: ['≤', '<=']?.includes(configuredAction)
+							? val <= limit
+							: val < limit && op == configuredAction;
+					case '>':
+						return operator === configuredAction
+							? val >= limit && op == configuredAction
+							: ['≥', '>=']?.includes(configuredAction)
+							? val >= limit
+							: val > limit && op == configuredAction;
+					case '<=':
+					case '≤':
+						return val <= limit && op == configuredAction;
+					case '>=':
+					case '≥':
+						return val >= limit && op == configuredAction;
+					case '=':
+					case '==':
+						return val === limit && op == configuredAction;
+					case '!=':
+					case '≠':
+						return val !== limit && op == configuredAction;
+					default:
+						return false;
+				}
+			};
+
+			const isValid = satisfies(inputValue, effectiveOperator, targetLimit);
+
+			if (analysisValues && !inputValue && inputValue !== 0) return true;
+
+			if (
+				actionName === 'Between/Range' &&
+				inputValue !== null &&
+				(inputValue > highLimitValue || inputValue < lowerLimitValue)
+			) {
+				isNotInRange = true;
+			} else if (
+				actionName === 'Target' &&
+				inputValue !== null &&
+				(inputValue > highLimitValue || inputValue < lowerLimitValue)
+			) {
+				isNotInRange = true;
+			} else if (effectiveOperator === '<' && inputValue !== null && !isValid) {
+				isNotInRange = true;
+			} else if (effectiveOperator === '>' && inputValue !== null && !isValid) {
+				isNotInRange = true;
+			} else if (
+				(effectiveOperator === '≥' || effectiveOperator === '>=') &&
+				inputValue !== null &&
+				!(inputValue >= targetLimit)
+			) {
+				isNotInRange = true;
+			} else if (
+				(effectiveOperator === '≤' || effectiveOperator === '<=') &&
+				inputValue !== null &&
+				!(inputValue <= targetLimit)
+			) {
+				isNotInRange = true;
+			} else if (
+				(effectiveOperator === '=' || effectiveOperator === '') &&
+				inputValue !== null &&
+				inputValue != targetLimit
+			) {
+				isNotInRange = true;
+			} else if (
+				(effectiveOperator === '≠' || effectiveOperator === '!=') &&
+				inputValue !== null &&
+				inputValue === targetLimit
+			) {
+				isNotInRange = true;
+			} else {
+				isNotInRange = false;
+			}
+		} else if (
+			analysisValues !== null &&
+			analysisValues !== undefined &&
+			analysisValues !== '' &&
+			(charData?.toleranceType === 'Qualitative'
+				? Array.isArray(charData?.qualitativeTolerance) &&
+				  !charData.qualitativeTolerance.some((q) => q?.name?.trim() === analysisValues?.trim()) &&
+				  !alisQualtative?.alias?.some((q) => q?.name?.trim() === analysisValues?.trim())
+				: charData?.toleranceType === 'Descriptive'
+				? charData?.descriptiveTolerance && charData.descriptiveTolerance?.trim() !== analysisValues?.trim()
+				: true)
+		) {
+			isNotInRange = true;
+		}
+
+		return isNotInRange;
+	},
+};
+
 export function checkCustomConditional(component, custom, row, data, form, variable, onError, instance) {
   if (typeof custom === 'string') {
-    custom = `var ${variable} = true; ${custom}; return ${variable};`;
+    const mStr = custom.split('result =')[1] || custom;
+    custom = `var ${variable} = true; result =${mStr}; return ${variable};`;
   }
   const value = (instance && instance.evaluate) ?
-    instance.evaluate(custom, { row, data, form }) :
-    evaluate(custom, { row, data, form });
+    instance.evaluate(custom, { row, data, form, ...methods, d:data, r:row } ) :
+    evaluate(custom, { row, data, form, ...methods, d:data, r:row  });
   if (value === null) {
     return onError;
   }

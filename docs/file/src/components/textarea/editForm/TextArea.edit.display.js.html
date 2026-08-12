@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">src/components/textarea/editForm/TextArea.edit.display.js | formiojs</title>
+  <title data-ice="title">src/components/textarea/editForm/TextArea.edit.display.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -176,7 +175,8 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/textarea/editForm/TextArea.edit.display.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import _ from &apos;lodash&apos;;
 import { GlobalFormio as Formio } from &apos;../../../Formio&apos;;
-
+//select is a custom component , in order to differentiate between form.io &apos;s select component we have used &apos;selectF&apos;
+// tabs and functinalities are removed
 export default [
   {
     key: &apos;inputMask&apos;,
@@ -196,6 +196,7 @@ export default [
     key: &apos;rows&apos;,
     label: &apos;Rows&apos;,
     weight: 210,
+    builderEdit:true,
     tooltip: &apos;This allows control over how many rows are visible in the text area.&apos;,
     placeholder: &apos;Enter the amount of rows&apos;
   },
@@ -207,23 +208,23 @@ export default [
     defaultValue: true,
     label: &apos;Allow Spellcheck&apos;
   },
-  {
-    type: &apos;select&apos;,
-    input: true,
-    key: &apos;editor&apos;,
-    label: &apos;Editor&apos;,
-    tooltip: &apos;Select the type of WYSIWYG editor to use for this text area.&apos;,
-    dataSrc: &apos;values&apos;,
-    data: {
-      values: [
-        { label: &apos;None&apos;, value: &apos;&apos; },
-        { label: &apos;ACE&apos;, value: &apos;ace&apos; },
-        { label: &apos;CKEditor&apos;, value: &apos;ckeditor&apos; },
-        { label: &apos;Quill&apos;, value: &apos;quill&apos; },
-      ]
-    },
-    weight: 415
-  },
+  // {
+  //   type: &apos;selectF&apos;,
+  //   input: true,
+  //   key: &apos;editor&apos;,
+  //   label: &apos;Editor&apos;,
+  //   tooltip: &apos;Select the type of WYSIWYG editor to use for this text area.&apos;,
+  //   dataSrc: &apos;values&apos;,
+  //   data: {
+  //     values: [
+  //       { label: &apos;None&apos;, value: &apos;&apos; },
+  //       { label: &apos;ACE&apos;, value: &apos;ace&apos; },
+  //       { label: &apos;CKEditor&apos;, value: &apos;ckeditor&apos; },
+  //       { label: &apos;Quill&apos;, value: &apos;quill&apos; },
+  //     ]
+  //   },
+  //   weight: 415
+  // },
   {
     type: &apos;checkbox&apos;,
     input: true,
@@ -266,7 +267,7 @@ export default [
     }
   },
   {
-    type: &apos;select&apos;,
+    type: &apos;selectF&apos;,
     input: true,
     key: &apos;uploadStorage&apos;,
     label: &apos;Image Upload Storage&apos;,
@@ -370,13 +371,13 @@ export default [
     }
   },
   {
-    type: &apos;select&apos;,
+    type: &apos;selectF&apos;,
     input: true,
     key: &apos;as&apos;,
     label: &apos;Save As&apos;,
     dataSrc: &apos;values&apos;,
     tooltip: &apos;This setting determines how the value should be entered and stored in the database.&apos;,
-    clearOnHide: true,
+    clearOnHide: false,
     data: {
       values: [
         { label: &apos;String&apos;, value: &apos;string&apos; },

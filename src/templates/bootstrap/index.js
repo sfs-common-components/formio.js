@@ -64,7 +64,7 @@ import errorsList from './errorsList';
 import alert from './alert';
 import builderSidebarTab from './builderSidebarTab';
 import voiceModal from './voiceModal';
-
+import Speccomponent from './Speccomponent';
 export default {
   transform(type, text) {
     if (!text) {
@@ -142,5 +142,6 @@ export default {
   wizardNav,
   builderSidebarTab,
   errorsList,
-  alert
+  alert,
+  Speccomponent
 };

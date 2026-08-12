@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">src/components/textfield/editForm/TextField.edit.display.js | formiojs</title>
+  <title data-ice="title">src/components/textfield/editForm/TextField.edit.display.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -177,29 +176,31 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Widgets from &apos;../../../widgets&apos;;
 import _ from &apos;lodash&apos;;
 export default [
-  {
-    weight: 400,
-    type: &apos;select&apos;,
-    input: true,
-    key: &apos;widget.type&apos;,
-    label: &apos;Widget&apos;,
-    placeholder: &apos;Select a widget&apos;,
-    tooltip: &apos;The widget is the display UI used to input the value of the field.&apos;,
-    defaultValue: &apos;input&apos;,
-    onChange: (context) =&gt; {
-      context.data.widget = _.pick(context.data.widget, &apos;type&apos;);
-    },
-    dataSrc: &apos;values&apos;,
-    data: {
-      values: [
-        { label: &apos;Input Field&apos;, value: &apos;input&apos; },
-        { label: &apos;Calendar Picker&apos;, value: &apos;calendar&apos; },
-      ]
-    },
-    conditional: {
-      json: { &apos;===&apos;: [{ var: &apos;data.type&apos; }, &apos;textfield&apos;] }
-    }
-  },
+  //select is a custom component , in order to differentiate between form.io &apos;s select component we have used &apos;selectF&apos;
+// tabs and functinalities are removed
+  // {
+  //   weight: 400,
+  //   type: &apos;select&apos;,
+  //   input: true,
+  //   key: &apos;widget.type&apos;,
+  //   label: &apos;Widget&apos;,
+  //   placeholder: &apos;Select a widget&apos;,
+  //   tooltip: &apos;The widget is the display UI used to input the value of the field.&apos;,
+  //   defaultValue: &apos;input&apos;,
+  //   onChange: (context) =&gt; {
+  //     context.data.widget = _.pick(context.data.widget, &apos;type&apos;);
+  //   },
+  //   dataSrc: &apos;values&apos;,
+  //   data: {
+  //     values: [
+  //       { label: &apos;Input Field&apos;, value: &apos;input&apos; },
+  //       { label: &apos;Calendar Picker&apos;, value: &apos;calendar&apos; },
+  //     ]
+  //   },
+  //   conditional: {
+  //     json: { &apos;===&apos;: [{ var: &apos;data.type&apos; }, &apos;textfield&apos;] }
+  //   }
+  // },
   {
     weight: 405,
     type: &apos;textarea&apos;,
@@ -244,7 +245,8 @@ export default [
     input: true,
     key: &apos;inputMask&apos;,
     label: &apos;Input Mask&apos;,
-    tooltip: &apos;An input mask helps the user with input by ensuring a predefined format.&lt;br&gt;&lt;br&gt;9: numeric&lt;br&gt;a: alphabetical&lt;br&gt;*: alphanumeric&lt;br&gt;&lt;br&gt;Example telephone mask: (999) 999-9999&lt;br&gt;&lt;br&gt;See the &lt;a target=\&apos;_blank\&apos; href=\&apos;https://github.com/RobinHerbots/jquery.inputmask\&apos;&gt;jquery.inputmask documentation&lt;/a&gt; for more information.&lt;/a&gt;&apos;,
+    builderEdit:true,
+    tooltip: &apos;inputMask&apos;,
     customConditional(context) {
       return !context.data.allowMultipleMasks;
     },
@@ -255,7 +257,8 @@ export default [
     input: true,
     key: &apos;displayMask&apos;,
     label: &apos;Display Mask&apos;,
-    tooltip: &apos;A display mask helps to display the input in a readable way, this won\&apos;t affect the  value which will be saved (to affect both view and saved value, delete Display Mask and use Input Mask).&lt;br&gt;&lt;br&gt;9: numeric&lt;br&gt;a: alphabetical&lt;br&gt;*: alphanumeric&lt;br&gt;&lt;br&gt;Example telephone mask: (999) 999-9999&lt;br&gt;&lt;br&gt;See the &lt;a target=\&apos;_blank\&apos; href=\&apos;https://github.com/RobinHerbots/jquery.inputmask\&apos;&gt;jquery.inputmask documentation&lt;/a&gt; for more information.&lt;/a&gt;&apos;,
+    builderEdit:true,
+    tooltip: &apos;displayMask&apos;,
     customConditional(context) {
       return !context.data.allowMultipleMasks;
     },
@@ -266,7 +269,8 @@ export default [
     input: true,
     key: &apos;inputMaskPlaceholderChar&apos;,
     label: &apos;Input Mask Placeholder Char&apos;,
-    tooltip: &apos;You can specify a char which will be used as a placeholder in the field. &lt;br&gt;E.g., \u02cd&lt;br&gt;Make note that placeholder char will be replaced by a space if it is used inside the mask&apos;,
+    tooltip: &apos;inputMaskPlaceholderChar&apos;,
+    builderEdit:true,
     validation: {
       maxLength: 1
     },
@@ -274,21 +278,21 @@ export default [
       return context.data.inputMask || context.data.displayMask;
     }
   },
-  {
-    weight: 413,
-    type: &apos;checkbox&apos;,
-    input: true,
-    key: &apos;allowMultipleMasks&apos;,
-    label: &apos;Allow Multiple Masks&apos;
-  },
-  {
-    weight: 1350,
-    type: &apos;checkbox&apos;,
-    input: true,
-    key: &apos;spellcheck&apos;,
-    defaultValue: true,
-    label: &apos;Allow Spellcheck&apos;
-  },
+  // {
+  //   weight: 413,
+  //   type: &apos;checkbox&apos;,
+  //   input: true,
+  //   key: &apos;allowMultipleMasks&apos;,
+  //   label: &apos;Allow Multiple Masks&apos;
+  // },
+  // {
+  //   weight: 1350,
+  //   type: &apos;checkbox&apos;,
+  //   input: true,
+  //   key: &apos;spellcheck&apos;,
+  //   defaultValue: true,
+  //   label: &apos;Allow Spellcheck&apos;
+  // },
   {
     weight: 417,
     type: &apos;datagrid&apos;,
@@ -319,6 +323,7 @@ export default [
     type: &apos;textfield&apos;,
     input: true,
     key: &apos;prefix&apos;,
+    builderEdit:true,
     label: &apos;Prefix&apos;
   },
   {
@@ -326,41 +331,42 @@ export default [
     type: &apos;textfield&apos;,
     input: true,
     key: &apos;suffix&apos;,
+    builderEdit:true,
     label: &apos;Suffix&apos;
   },
-  {
-    weight: 700,
-    type: &apos;textfield&apos;,
-    input: true,
-    key: &apos;autocomplete&apos;,
-    label: &apos;Autocomplete&apos;,
-    placeholder: &apos;on&apos;,
-    tooltip: &apos;Indicates whether input elements can by default have their values automatically completed by the browser. See the &lt;a href=\&apos;https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete\&apos;&gt;MDN documentation&lt;/a&gt; on autocomplete for more information.&apos;
-  },
-  {
-    weight: 1300,
-    type: &apos;checkbox&apos;,
-    label: &apos;Hide Input&apos;,
-    tooltip: &apos;Hide the input in the browser. This does not encrypt on the server. Do not use for passwords.&apos;,
-    key: &apos;mask&apos;,
-    input: true
-  },
-  {
-    weight: 1200,
-    type: &apos;checkbox&apos;,
-    label: &apos;Show Word Counter&apos;,
-    tooltip: &apos;Show a live count of the number of words.&apos;,
-    key: &apos;showWordCount&apos;,
-    input: true
-  },
-  {
-    weight: 1201,
-    type: &apos;checkbox&apos;,
-    label: &apos;Show Character Counter&apos;,
-    tooltip: &apos;Show a live count of the number of characters.&apos;,
-    key: &apos;showCharCount&apos;,
-    input: true
-  },
+  // {
+  //   weight: 700,
+  //   type: &apos;textfield&apos;,
+  //   input: true,
+  //   key: &apos;autocomplete&apos;,
+  //   label: &apos;Autocomplete&apos;,
+  //   placeholder: &apos;on&apos;,
+  //   tooltip: &apos;Indicates whether input elements can by default have their values automatically completed by the browser. See the &lt;a href=\&apos;https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete\&apos;&gt;MDN documentation&lt;/a&gt; on autocomplete for more information.&apos;
+  // },
+  // {
+  //   weight: 1300,
+  //   type: &apos;checkbox&apos;,
+  //   label: &apos;Hide Input&apos;,
+  //   tooltip: &apos;Hide the input in the browser. This does not encrypt on the server. Do not use for passwords.&apos;,
+  //   key: &apos;mask&apos;,
+  //   input: true
+  // },
+  // {
+  //   weight: 1200,
+  //   type: &apos;checkbox&apos;,
+  //   label: &apos;Show Word Counter&apos;,
+  //   tooltip: &apos;Show a live count of the number of words.&apos;,
+  //   key: &apos;showWordCount&apos;,
+  //   input: true
+  // },
+  // {
+  //   weight: 1201,
+  //   type: &apos;checkbox&apos;,
+  //   label: &apos;Show Character Counter&apos;,
+  //   tooltip: &apos;Show a live count of the number of characters.&apos;,
+  //   key: &apos;showCharCount&apos;,
+  //   input: true
+  // },
 ];
 </code></pre>
 

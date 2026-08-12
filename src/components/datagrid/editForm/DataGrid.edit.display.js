@@ -1,4 +1,3 @@
-
 //select is a custom component , in order to differentiate between form.io 's select component we have used 'selectF'
 //changed group and weight to reorder components
 //tabs & functionalities are removed
@@ -205,99 +204,102 @@ export default [
     key: 'modalEditEnabled',
     weight: 450
   },
-//   {
-//     key: 'enableColumnGroup',
-//     type: 'checkbox',
-//     label: 'Enable Column Group',
-//     weight: 451,
-//     input: true
-//   },
-//   {
-//     label: 'Column groups',
-//     disableAddingRemovingRows: false,
-//     disableAddingRows: false,
-//     disableRemovingRows: false,
-//     defaultOpen: false,
-//     addAnother: '',
-//     addAnotherPosition: 'bottom',
-//     mask: false,
-//     tableView: true,
-//     alwaysEnabled: false,
-//     type: 'datagrid',
-//     input: true,
-//     key: 'clmGrp',
-//     // reorder: true,
-//     components: [
-//       {
-//         "label": "Column Name",
-//         "allowMultipleMasks": false,
-//         "showWordCount": false,
-//         "showCharCount": false,
-//         "tableView": true,
-//         "alwaysEnabled": false,
-//         "type": "textfield",
-//         "input": true,
-//         "builderEdit": true,
-//         "key": "name",
-//         "widget": {
-//           "type": ""
-//         },
-//         "validate": {
-//           "custom": "if (!row.name) { \
-//             return false \
-//           } else { return true; }",
-//           "customMessage": "This field cannot be left empty"
-//         }
-//       },
-//       {
-//         "label": "Starting Column Number",
-//         "mask": false,
-//         "tableView": true,
-//         "alwaysEnabled": false,
-//         "type": "number",
-//         "input": true,
-//         "builderEdit": true,
-//         "key": "from",
-//        "validate":{
-//     "custom": "if (row && data.clmGrp) { \
-//         let overlap = false; \
-//         let prevRow = null; \
-//         if(row.from<=0){\
-//         return false;\
-//         }\
-//         data.clmGrp.forEach((ele, i) => { \
-//             if (prevRow) { \
-//                 if ((!row.to || row.to==ele.to) &&row.from <= prevRow.to) { \
-//                     overlap = true; \
-//                 } \
-//             } \
-//             prevRow = ele; \
-//         }); \
-//         return !overlap; \
-//     } else { \
-//         return true; \
-//     }",
-//     "customMessage": "The starting index must be greater than 0 and cannot overlap with any previously entered indices"
-// }
-//       },
-//       {
-//         "label": "Ending Column Number",
-//         "mask": false,
-//         "tableView": true,
-//         "alwaysEnabled": false,
-//         "type": "number",
-//         "input": true,
-//         "builderEdit": true,
-//         "key": "to",
-//         "validate": {
-//           "custom": "if (row && data.clmGrp) { \
-//             return row.to > row.from; \
-//           } else { return true; }",
-//           "customMessage": "Ending index must be greater than or equal to the starting index"
-//         }
-//       }
-//     ],
-//     weight: 452,
-//     conditional: { json: { var: 'data.enableColumnGroup' } }
-//   }
+  {
+    key: 'enableColumnGroup',
+    type: 'checkbox',
+    label: 'Enable Column Group',
+    weight: 451,
+    input: true
+  },
+  {
+    label: 'Column Groups',
+    disableAddingRemovingRows: false,
+    disableAddingRows: false,
+    disableRemovingRows: false,
+    defaultOpen: false,
+    addAnother: '',
+    addAnotherPosition: 'bottom',
+    mask: false,
+    tableView: true,
+    alwaysEnabled: false,
+    type: 'datagrid',
+    input: true,
+    key: 'clmGrp',
+    // reorder: true,
+    components: [
+      {
+        'label': 'Column Name',
+        'allowMultipleMasks': false,
+        'showWordCount': false,
+        'showCharCount': false,
+        'tableView': true,
+        'alwaysEnabled': false,
+        'type': 'textfield',
+        'input': true,
+        'builderEdit': true,
+        'key': 'name',
+        'widget': {
+          'type': ''
+        },
+        'validate': {
+          'custom': 'if (!row.name?.trim()) { \
+            return false \
+          } else { return true; }',
+          'customMessage': 'Field must not be empty.'
+        }
+      },
+      {
+        'label': 'Starting Column Number',
+        'mask': false,
+        'tableView': true,
+        'alwaysEnabled': false,
+        'type': 'number',
+        'input': true,
+        'builderEdit': true,
+        'key': 'from',
+       'validate':{
+    'custom': 'if (row && data.clmGrp) { \
+        let overlap = false; \
+        let prevRow = null; \
+        if(row.from<=0 ||!Number.isInteger(row.from)){\
+        return false;\
+        }\
+        data.clmGrp.forEach((ele, i) => { \
+            if (prevRow) { \
+                if ((!row.to || row.to==ele.to) &&row.from <= prevRow.to) { \
+                    overlap = true; \
+                } \
+            } \
+            prevRow = ele; \
+        }); \
+        return !overlap; \
+    } else { \
+        return true; \
+    }',
+    'customMessage': 'Value must be greater than 0 and must not overlap.'
+}
+      },
+      {
+        'label': 'Ending Column Number',
+        'mask': false,
+        'tableView': true,
+        'alwaysEnabled': false,
+        'type': 'number',
+        'input': true,
+        'builderEdit': true,
+        'key': 'to',
+        'validate': {
+          'custom': 'if (row && data.clmGrp) { \
+             if (row.to <= row.from || !Number.isInteger(row.to)) { \
+            return false; \
+        } \
+        return true; \
+          } else { return true; }',
+          'customMessage': 'Value must be greater than previous inputs.'
+        }
+      }
+    ],
+    weight: 452,
+    conditional: { json: { var: 'data.enableColumnGroup' } }
+  }
 ];

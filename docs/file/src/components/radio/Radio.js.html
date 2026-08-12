@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../">
-  <title data-ice="title">src/components/radio/Radio.js | formiojs</title>
+  <title data-ice="title">src/components/radio/Radio.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -187,18 +186,20 @@ export default class RadioComponent extends Field {
       key: &apos;radio&apos;,
       values: [{ label: &apos;&apos;, value: &apos;&apos; }],
       validate: {
-        onlyAvailableItems: false
+        onlyAvailableItems: false,
+        customMessage: &apos; &apos;   //validation message
       },
-      fieldSet: false
+      fieldSet: false,
+
     }, ...extend);
   }
 
   static get builderInfo() {
     return {
       title: &apos;Radio&apos;,
-      group: &apos;basic&apos;,
+      group: &apos;customFuctions&apos;,          //reordering
       icon: &apos;dot-circle-o&apos;,
-      weight: 80,
+      weight: 50,
       documentation: &apos;/userguide/#radio&apos;,
       schema: RadioComponent.schema()
     };
@@ -261,6 +262,7 @@ export default class RadioComponent extends Field {
     this.loadRefs(element, { input: &apos;multiple&apos;, wrapper: &apos;multiple&apos; });
     this.refs.input.forEach((input, index) =&gt; {
       this.addEventListener(input, this.inputInfo.changeEvent, () =&gt; {
+        event.stopPropagation();
         this.updateValue(null, {
           modified: true,
         });
@@ -278,7 +280,7 @@ export default class RadioComponent extends Field {
         this.addEventListener(input, &apos;keyup&apos;, (event) =&gt; {
           if (event.key === &apos; &apos; &amp;&amp; dataValue === input.value) {
             event.preventDefault();
-
+            event.stopPropagation();
             this.updateValue(null, {
               modified: true,
             });

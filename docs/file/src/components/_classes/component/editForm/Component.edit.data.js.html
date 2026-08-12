@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../../">
-  <title data-ice="title">src/components/_classes/component/editForm/Component.edit.data.js | formiojs</title>
+  <title data-ice="title">src/components/_classes/component/editForm/Component.edit.data.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -174,132 +173,135 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/_classes/component/editForm/Component.edit.data.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import EditFormUtils from &apos;./utils&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">//import EditFormUtils from &apos;./utils&apos;;
 /* eslint-disable max-len */
+  //tabs &amp; functionalities are removed
+
 export default [
-  {
-    weight: 0,
-    type: &apos;checkbox&apos;,
-    label: &apos;Multiple Values&apos;,
-    tooltip: &apos;Allows multiple values to be entered for this field.&apos;,
-    key: &apos;multiple&apos;,
-    input: true
-  },
+  // {
+  //   weight: 1,
+  //   type: &apos;checkbox&apos;,
+  //   label: &apos;Multiple Values&apos;,
+  //   tooltip: &apos;Allows multiple values to be entered for this field.&apos;,
+  //   key: &apos;multiple&apos;,
+  //   input: true
+  // },
   {
     type: &apos;textfield&apos;,
     label: &apos;Default Value&apos;,
     key: &apos;defaultValue&apos;,
     weight: 5,
     placeholder: &apos;Default Value&apos;,
+    builderEdit:true,
     tooltip: &apos;The will be the value for this field, before user interaction. Having a default value will override the placeholder text.&apos;,
     input: true
   },
-  {
-    weight: 30,
-    type: &apos;radio&apos;,
-    label: &apos;Persistent&apos;,
-    tooltip: &apos;A persistent field will be stored in database when the form is submitted.&apos;,
-    key: &apos;persistent&apos;,
-    input: true,
-    inline: true,
-    defaultValue: true,
-    values: [
-      { label: &apos;None&apos;, value: false },
-      { label: &apos;Server&apos;, value: true },
-      { label: &apos;Client&apos;, value: &apos;client-only&apos; },
-    ]
-  },
-  {
-    weight: 150,
-    type: &apos;checkbox&apos;,
-    label: &apos;Protected&apos;,
-    tooltip: &apos;A protected field will not be returned when queried via API.&apos;,
-    key: &apos;protected&apos;,
-    input: true
-  },
-  {
-    type: &apos;checkbox&apos;,
-    input: true,
-    weight: 200,
-    key: &apos;dbIndex&apos;,
-    label: &apos;Database Index&apos;,
-    tooltip: &apos;Set this field as an index within the database. Increases performance for submission queries.&apos;
-  },
-  {
-    weight: 400,
-    type: &apos;checkbox&apos;,
-    label: &apos;Encrypted (Enterprise Only)&apos;,
-    tooltip: &apos;Encrypt this field on the server. This is two way encryption which is not suitable for passwords.&apos;,
-    key: &apos;encrypted&apos;,
-    input: true
-  },
-  {
-    type: &apos;select&apos;,
-    input: true,
-    key: &apos;redrawOn&apos;,
-    label: &apos;Redraw On&apos;,
-    weight: 600,
-    tooltip: &apos;Redraw this component if another component changes. This is useful if interpolating parts of the component like the label.&apos;,
-    dataSrc: &apos;custom&apos;,
-    valueProperty: &apos;value&apos;,
-    data: {
-      custom(context) {
-        var values = [];
-        values.push({ label: &apos;Any Change&apos;, value: &apos;data&apos; });
-        context.utils.eachComponent(context.instance.options.editForm.components, function(component, path) {
-          if (component.key !== context.data.key) {
-            values.push({
-              label: component.label || component.key,
-              value: path
-            });
-          }
-        });
-        return values;
-      }
-    },
-    conditional: {
-      json: { &apos;!&apos; : [{ var: &apos;data.dataSrc&apos; }] },
-    },
-  },
-  {
-    weight: 700,
-    type: &apos;checkbox&apos;,
-    label: &apos;Clear Value When Hidden&apos;,
-    key: &apos;clearOnHide&apos;,
-    defaultValue: true,
-    tooltip: &apos;When a field is hidden, clear the value.&apos;,
-    input: true,
-    clearOnHide: false,
-    calculateValue: &apos;value = data.hidden ? false : value&apos;,
-    conditional: {
-      json: { &apos;!&apos; : [{ var: &apos;data.hidden&apos; }] }
-    }
-  },
-  EditFormUtils.javaScriptValue(&apos;Custom Default Value&apos;, &apos;customDefaultValue&apos;, &apos;customDefaultValue&apos;, 1000,
-    &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;value = data.firstName + &quot; &quot; + data.lastName;&lt;/pre&gt;&lt;/p&gt;&apos;,
-    &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;{&quot;cat&quot;: [{&quot;var&quot;: &quot;data.firstName&quot;}, &quot; &quot;, {&quot;var&quot;: &quot;data.lastName&quot;}]}&lt;/pre&gt;&apos;
-  ),
-  EditFormUtils.javaScriptValue(&apos;Calculated Value&apos;, &apos;calculateValue&apos;, &apos;calculateValue&apos;, 1100,
-    &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;value = data.a + data.b + data.c;&lt;/pre&gt;&lt;/p&gt;&apos;,
-    &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;{&quot;+&quot;: [{&quot;var&quot;: &quot;data.a&quot;}, {&quot;var&quot;: &quot;data.b&quot;}, {&quot;var&quot;: &quot;data.c&quot;}]}&lt;/pre&gt;&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://formio.github.io/formio.js/app/examples/calculated.html&quot;&gt;Click here for an example&lt;/a&gt;&lt;/p&gt;&apos;,
-&apos;&lt;tr&gt;&lt;th&gt;token&lt;/th&gt;&lt;td&gt;The decoded JWT token for the authenticated user.&lt;/td&gt;&lt;/tr&gt;&apos;
-  ),
-  {
-    type: &apos;checkbox&apos;,
-    input: true,
-    weight: 1100,
-    key: &apos;calculateServer&apos;,
-    label: &apos;Calculate Value on server&apos;,
-    tooltip: &apos;Checking this will run the calculation on the server. This is useful if you wish to override the values submitted with the calculations performed on the server.&apos;
-  },
-  {
-    type: &apos;checkbox&apos;,
-    input: true,
-    weight: 1200,
-    key: &apos;allowCalculateOverride&apos;,
-    label: &apos;Allow Manual Override of Calculated Value&apos;,
-    tooltip: &apos;When checked, this will allow the user to manually override the calculated value.&apos;
-  },
+//   {
+//     weight: 30,
+//     type: &apos;radio&apos;,
+//     label: &apos;Persistent&apos;,
+//     tooltip: &apos;A persistent field will be stored in database when the form is submitted.&apos;,
+//     key: &apos;persistent&apos;,
+//     input: true,
+//     inline: true,
+//     defaultValue: true,
+//     values: [
+//       { label: &apos;None&apos;, value: false },
+//       { label: &apos;Server&apos;, value: true },
+//       { label: &apos;Client&apos;, value: &apos;client-only&apos; },
+//     ]
+//   },
+//   {
+//     weight: 150,
+//     type: &apos;checkbox&apos;,
+//     label: &apos;Protected&apos;,
+//     tooltip: &apos;A protected field will not be returned when queried via API.&apos;,
+//     key: &apos;protected&apos;,
+//     input: true
+//   },
+//   {
+//     type: &apos;checkbox&apos;,
+//     input: true,
+//     weight: 200,
+//     key: &apos;dbIndex&apos;,
+//     label: &apos;Database Index&apos;,
+//     tooltip: &apos;Set this field as an index within the database. Increases performance for submission queries.&apos;
+//   },
+//   {
+//     weight: 400,
+//     type: &apos;checkbox&apos;,
+//     label: &apos;Encrypted (Enterprise Only)&apos;,
+//     tooltip: &apos;Encrypt this field on the server. This is two way encryption which is not suitable for passwords.&apos;,
+//     key: &apos;encrypted&apos;,
+//     input: true
+//   },
+//   {
+//     type: &apos;select&apos;,
+//     input: true,
+//     key: &apos;redrawOn&apos;,
+//     label: &apos;Redraw On&apos;,
+//     weight: 600,
+//     tooltip: &apos;Redraw this component if another component changes. This is useful if interpolating parts of the component like the label.&apos;,
+//     dataSrc: &apos;custom&apos;,
+//     valueProperty: &apos;value&apos;,
+//     data: {
+//       custom(context) {
+//         var values = [];
+//         values.push({ label: &apos;Any Change&apos;, value: &apos;data&apos; });
+//         context.utils.eachComponent(context.instance.options.editForm.components, function(component, path) {
+//           if (component.key !== context.data.key) {
+//             values.push({
+//               label: component.label || component.key,
+//               value: path
+//             });
+//           }
+//         });
+//         return values;
+//       }
+//     },
+//     conditional: {
+//       json: { &apos;!&apos; : [{ var: &apos;data.dataSrc&apos; }] },
+//     },
+//   },
+//   {
+//     weight: 700,
+//     type: &apos;checkbox&apos;,
+//     label: &apos;Clear Value When Hidden&apos;,
+//     key: &apos;clearOnHide&apos;,
+//     defaultValue: true,
+//     tooltip: &apos;When a field is hidden, clear the value.&apos;,
+//     input: true,
+//     clearOnHide: false,
+//     calculateValue: &apos;value = data.hidden ? false : value&apos;,
+//     conditional: {
+//       json: { &apos;!&apos; : [{ var: &apos;data.hidden&apos; }] }
+//     }
+//   },
+//   EditFormUtils.javaScriptValue(&apos;Custom Default Value&apos;, &apos;customDefaultValue&apos;, &apos;customDefaultValue&apos;, 1000,
+//     &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;value = data.firstName + &quot; &quot; + data.lastName;&lt;/pre&gt;&lt;/p&gt;&apos;,
+//     &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;{&quot;cat&quot;: [{&quot;var&quot;: &quot;data.firstName&quot;}, &quot; &quot;, {&quot;var&quot;: &quot;data.lastName&quot;}]}&lt;/pre&gt;&apos;
+//   ),
+//   EditFormUtils.javaScriptValue(&apos;Calculated Value&apos;, &apos;calculateValue&apos;, &apos;calculateValue&apos;, 1100,
+//     &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;value = data.a + data.b + data.c;&lt;/pre&gt;&lt;/p&gt;&apos;,
+//     &apos;&lt;p&gt;&lt;h4&gt;Example:&lt;/h4&gt;&lt;pre&gt;{&quot;+&quot;: [{&quot;var&quot;: &quot;data.a&quot;}, {&quot;var&quot;: &quot;data.b&quot;}, {&quot;var&quot;: &quot;data.c&quot;}]}&lt;/pre&gt;&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://formio.github.io/formio.js/app/examples/calculated.html&quot;&gt;Click here for an example&lt;/a&gt;&lt;/p&gt;&apos;,
+// &apos;&lt;tr&gt;&lt;th&gt;token&lt;/th&gt;&lt;td&gt;The decoded JWT token for the authenticated user.&lt;/td&gt;&lt;/tr&gt;&apos;
+//   ),
+//   {
+//     type: &apos;checkbox&apos;,
+//     input: true,
+//     weight: 1100,
+//     key: &apos;calculateServer&apos;,
+//     label: &apos;Calculate Value on server&apos;,
+//     tooltip: &apos;Checking this will run the calculation on the server. This is useful if you wish to override the values submitted with the calculations performed on the server.&apos;
+//   },
+//   {
+//     type: &apos;checkbox&apos;,
+//     input: true,
+//     weight: 1200,
+//     key: &apos;allowCalculateOverride&apos;,
+//     label: &apos;Allow Manual Override of Calculated Value&apos;,
+//     tooltip: &apos;When checked, this will allow the user to manually override the calculated value.&apos;
+//   },
 ];
 /* eslint-enable max-len */
 </code></pre>

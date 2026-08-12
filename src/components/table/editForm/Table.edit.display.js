@@ -89,7 +89,7 @@ export default [
     label: 'Striped',
     key: 'striped',
     tooltip: 'This will stripe the table if checked.',
-    input: true,  
+    input: true,
     weight: 701
   },
   {

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../../">
-  <title data-ice="title">src/components/_classes/component/editForm/Component.edit.api.js | formiojs</title>
+  <title data-ice="title">src/components/_classes/component/editForm/Component.edit.api.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -182,35 +181,38 @@
     key: &apos;key&apos;,
     label: &apos;Property Name&apos;,
     tooltip: &apos;The name of this field in the API endpoint.&apos;,
+    builderEdit:true,
     validate: {
       pattern: &apos;(\\w|\\w[\\w-.]*\\w)&apos;,
       patternMessage: &apos;The property name must only contain alphanumeric characters, underscores, dots and dashes and should not be ended by dash or dot.&apos;,
       required: true
     }
   },
-  {
-    weight: 100,
-    type: &apos;tags&apos;,
-    input: true,
-    label: &apos;Field Tags&apos;,
-    storeas: &apos;array&apos;,
-    tooltip: &apos;Tag the field for use in custom logic.&apos;,
-    key: &apos;tags&apos;
-  },
-  {
-    weight: 200,
-    type: &apos;datamap&apos;,
-    label: &apos;Custom Properties&apos;,
-    tooltip: &apos;This allows you to configure any custom properties for this component.&apos;,
-    key: &apos;properties&apos;,
-    valueComponent: {
-      type: &apos;textfield&apos;,
-      key: &apos;value&apos;,
-      label: &apos;Value&apos;,
-      placeholder: &apos;Value&apos;,
-      input: true
-    }
-  },
+
+  //tabs &amp; functionalities are removed
+  // {
+  //   weight: 100,
+  //   type: &apos;tags&apos;,
+  //   input: true,
+  //   label: &apos;Field Tags&apos;,
+  //   storeas: &apos;array&apos;,
+  //   tooltip: &apos;Tag the field for use in custom logic.&apos;,
+  //   key: &apos;tags&apos;
+  // },
+  // {
+  //   weight: 200,
+  //   type: &apos;datamap&apos;,
+  //   label: &apos;Custom Properties&apos;,
+  //   tooltip: &apos;This allows you to configure any custom properties for this component.&apos;,
+  //   key: &apos;properties&apos;,
+  //   valueComponent: {
+  //     type: &apos;textfield&apos;,
+  //     key: &apos;value&apos;,
+  //     label: &apos;Value&apos;,
+  //     placeholder: &apos;Value&apos;,
+  //     input: true
+  //   }
+  // },
 ];
 </code></pre>
 

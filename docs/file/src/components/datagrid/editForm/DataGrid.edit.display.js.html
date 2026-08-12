@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">src/components/datagrid/editForm/DataGrid.edit.display.js | formiojs</title>
+  <title data-ice="title">src/components/datagrid/editForm/DataGrid.edit.display.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -174,16 +173,28 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/datagrid/editForm/DataGrid.edit.display.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">export default [
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">//select is a custom component , in order to differentiate between form.io &apos;s select component we have used &apos;selectF&apos;
+//changed group and weight to reorder components
+//tabs &amp; functionalities are removed
+
+export default [
   {
     key: &apos;placeholder&apos;,
     ignore: true
   },
   {
     type: &apos;checkbox&apos;,
-    label: &apos;Disable Adding / Removing Rows&apos;,
-    key: &apos;disableAddingRemovingRows&apos;,
-    tooltip: &apos;Check if you want to hide Add Another button and Remove Row button&apos;,
+    label: &apos;Allow Serial Number&apos;,
+    key: &apos;serialNumber&apos;,
+    tooltip: &apos;Check if you want to add serial number&apos;,
+    weight: 405,
+    input: true,
+  },
+  {
+    type: &apos;checkbox&apos;,
+    label: &apos;Disable Adding Rows&apos;,
+    key: &apos;disableAddingRows&apos;,
+    tooltip: &apos;Check if you want to hide Add Another button&apos;,
     weight: 405,
     input: true,
     clearOnHide: false,
@@ -191,23 +202,52 @@
       return !context.data.enableRowGroups;
     },
     calculateValue(context) {
-      return context.data.enableRowGroups ? true : context.data.disableAddingRemovingRows;
+      return context.data.enableRowGroups ? true : context.data.disableAddingRows;
     },
   },
   {
-    weight: 406,
-    type: &apos;textarea&apos;,
+    type: &apos;checkbox&apos;,
+    label: &apos;Allow Clone Row&apos;,
+    key: &apos;cloneRow&apos;,
+    weight: 407,
     input: true,
-    key: &apos;conditionalAddButton&apos;,
-    label: &apos;Conditional Add Button&apos;,
-    placeholder: &apos;show = ...&apos;,
-    tooltip: &apos;Specify condition when Add Button should be displayed.&apos;,
-    editor: &apos;ace&apos;,
-    as: &apos;javascript&apos;,
-    wysiwyg: {
-      minLines: 3,
+    clearOnHide: false,
+    customConditional(context) {
+      return context.data.disableAddingRows ? false : true;
+    },
+    calculateValue(context) {
+      return context.data.disableAddingRows ? false : context.data.cloneRow;
     },
   },
+  {
+    type: &apos;checkbox&apos;,
+    label: &apos;Disable Removing Rows&apos;,
+    key: &apos;disableRemovingRows&apos;,
+    tooltip: &apos;Check if you want to hide Remove Row button&apos;,
+    weight: 405,
+    input: true,
+    clearOnHide: false,
+    customConditional(context) {
+      return !context.data.enableRowGroups;
+    },
+    calculateValue(context) {
+    return context.data.enableRowGroups ? true :  context.data.disableRemovingRows;
+    },
+  },
+  // {
+  //   weight: 406,
+  //   type: &apos;textarea&apos;,
+  //   input: true,
+  //   key: &apos;conditionalAddButton&apos;,
+  //   label: &apos;Conditional Add Button&apos;,
+  //   placeholder: &apos;show = ...&apos;,
+  //   tooltip: &apos;Specify condition when Add Button should be displayed.&apos;,
+  //   editor: &apos;ace&apos;,
+  //   as: &apos;javascript&apos;,
+  //   wysiwyg: {
+  //     minLines: 3,
+  //   },
+  // },
   {
     type: &apos;checkbox&apos;,
     label: &apos;Allow Reorder&apos;,
@@ -222,13 +262,14 @@
     tooltip: &apos;Set the text of the Add Another button.&apos;,
     placeholder: &apos;Add Another&apos;,
     weight: 410,
+    builderEdit:true,
     input: true,
     customConditional(context) {
-      return !context.data.disableAddingRemovingRows;
+      return !context.data.disableAddingRows;
     }
   },
   {
-    type: &apos;select&apos;,
+    type: &apos;selectF&apos;,
     label: &apos;Add Another Position&apos;,
     key: &apos;addAnotherPosition&apos;,
     dataSrc: &apos;values&apos;,
@@ -244,16 +285,16 @@
     },
     weight: 411,
     customConditional(context) {
-      return !context.data.disableAddingRemovingRows;
+      return !context.data.disableAddingRows;
     }
   },
-  {
-    type: &apos;checkbox&apos;,
-    label: &apos;Equal column width&apos;,
-    key: &apos;layoutFixed&apos;,
-    weight: 430,
-    input: true,
-  },
+  // {
+  //   type: &apos;checkbox&apos;,
+  //   label: &apos;Equal column width&apos;,
+  //   key: &apos;layoutFixed&apos;,
+  //   weight: 430,
+  //   input: true,
+  // },
   {
     key: &apos;enableRowGroups&apos;,
     type: &apos;checkbox&apos;,
@@ -262,8 +303,18 @@
     input: true
   },
   {
+    key: &apos;hideRowGroupsInitially&apos;,
+    type: &apos;checkbox&apos;,
+    label: &apos;Hide Row Groups Initially&apos;,
+    weight: 441,
+    input: true
+  },
+  {
     label: &apos;Groups&apos;,
     disableAddingRemovingRows: false,
+    disableAddingRows: false,
+    disableRemovingRows: false,
+
     defaultOpen: false,
     addAnother: &apos;&apos;,
     addAnotherPosition: &apos;bottom&apos;,
@@ -284,6 +335,7 @@
         alwaysEnabled: false,
         type: &apos;textfield&apos;,
         input: true,
+        builderEdit:true,
         key: &apos;label&apos;,
         widget: {
           type: &apos;&apos;
@@ -297,11 +349,12 @@
         alwaysEnabled: false,
         type: &apos;number&apos;,
         input: true,
+        builderEdit:true,
         key: &apos;numberOfRows&apos;,
         row: &apos;0-1&apos;
       }
     ],
-    weight: 441,
+    weight: 443,
     conditional: { json: { var: &apos;data.enableRowGroups&apos; } }
   },
   {
@@ -309,16 +362,120 @@
     type: &apos;checkbox&apos;,
     input: true,
     key: &apos;groupToggle&apos;,
-    weight: 442,
+    weight: 443,
     conditional: { json: { var: &apos;data.enableRowGroups&apos; } }
   },
   {
-    label: &apos;Initialize Empty&apos;,
+    label: &apos;Enable Inline Row Editing&apos;,
     type: &apos;checkbox&apos;,
     input: true,
-    key: &apos;initEmpty&apos;,
-    tooltip: &apos;The DataGrid will have no visible rows when initialized.&apos;,
+    key: &apos;inlineEdit&apos;,
+    tooltip: &apos;All the rows will be disabled except the one which is editing.&apos;,
     weight: 450
+  },{
+    label:&apos;Enable Modal Edit&apos;,
+    type: &apos;checkbox&apos;,
+    input: true,
+    key: &apos;modalEditEnabled&apos;,
+    weight: 450
+  },
+  {
+    key: &apos;enableColumnGroup&apos;,
+    type: &apos;checkbox&apos;,
+    label: &apos;Enable Column Group&apos;,
+    weight: 451,
+    input: true
+  },
+  {
+    label: &apos;Column Groups&apos;,
+    disableAddingRemovingRows: false,
+    disableAddingRows: false,
+    disableRemovingRows: false,
+    defaultOpen: false,
+    addAnother: &apos;&apos;,
+    addAnotherPosition: &apos;bottom&apos;,
+    mask: false,
+    tableView: true,
+    alwaysEnabled: false,
+    type: &apos;datagrid&apos;,
+    input: true,
+    key: &apos;clmGrp&apos;,
+    // reorder: true,
+    components: [
+      {
+        &apos;label&apos;: &apos;Column Name&apos;,
+        &apos;allowMultipleMasks&apos;: false,
+        &apos;showWordCount&apos;: false,
+        &apos;showCharCount&apos;: false,
+        &apos;tableView&apos;: true,
+        &apos;alwaysEnabled&apos;: false,
+        &apos;type&apos;: &apos;textfield&apos;,
+        &apos;input&apos;: true,
+        &apos;builderEdit&apos;: true,
+        &apos;key&apos;: &apos;name&apos;,
+        &apos;widget&apos;: {
+          &apos;type&apos;: &apos;&apos;
+        },
+        &apos;validate&apos;: {
+          &apos;custom&apos;: &apos;if (!row.name?.trim()) { \
+            return false \
+          } else { return true; }&apos;,
+          &apos;customMessage&apos;: &apos;Field must not be empty.&apos;
+        }
+      },
+      {
+        &apos;label&apos;: &apos;Starting Column Number&apos;,
+        &apos;mask&apos;: false,
+        &apos;tableView&apos;: true,
+        &apos;alwaysEnabled&apos;: false,
+        &apos;type&apos;: &apos;number&apos;,
+        &apos;input&apos;: true,
+        &apos;builderEdit&apos;: true,
+        &apos;key&apos;: &apos;from&apos;,
+       &apos;validate&apos;:{
+    &apos;custom&apos;: &apos;if (row &amp;&amp; data.clmGrp) { \
+        let overlap = false; \
+        let prevRow = null; \
+        if(row.from&lt;=0 ||!Number.isInteger(row.from)){\
+        return false;\
+        }\
+        data.clmGrp.forEach((ele, i) =&gt; { \
+            if (prevRow) { \
+                if ((!row.to || row.to==ele.to) &amp;&amp;row.from &lt;= prevRow.to) { \
+                    overlap = true; \
+                } \
+            } \
+            prevRow = ele; \
+        }); \
+        return !overlap; \
+    } else { \
+        return true; \
+    }&apos;,
+    &apos;customMessage&apos;: &apos;Value must be greater than 0 and must not overlap.&apos;
+}
+      },
+      {
+        &apos;label&apos;: &apos;Ending Column Number&apos;,
+        &apos;mask&apos;: false,
+        &apos;tableView&apos;: true,
+        &apos;alwaysEnabled&apos;: false,
+        &apos;type&apos;: &apos;number&apos;,
+        &apos;input&apos;: true,
+        &apos;builderEdit&apos;: true,
+        &apos;key&apos;: &apos;to&apos;,
+        &apos;validate&apos;: {
+          &apos;custom&apos;: &apos;if (row &amp;&amp; data.clmGrp) { \
+             if (row.to &lt;= row.from || !Number.isInteger(row.to)) { \
+            return false; \
+        } \
+        return true; \
+          } else { return true; }&apos;,
+          &apos;customMessage&apos;: &apos;Value must be greater than previous inputs.&apos;
+        }
+      }
+    ],
+    weight: 452,
+    conditional: { json: { var: &apos;data.enableColumnGroup&apos; } }
   }
 ];
 </code></pre>

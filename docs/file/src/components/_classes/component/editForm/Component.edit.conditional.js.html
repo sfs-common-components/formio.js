@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../../">
-  <title data-ice="title">src/components/_classes/component/editForm/Component.edit.conditional.js | formiojs</title>
+  <title data-ice="title">src/components/_classes/component/editForm/Component.edit.conditional.js | @smartfoodsafe/formiojs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
+<meta name="description" content="JavaScript powered Forms with JSON Form Builder"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@smartfoodsafe/formiojs"><meta property="twitter:description" content="JavaScript powered Forms with JSON Form Builder"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -94,8 +94,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-survey">components/survey</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Survey">Survey</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-table">components/table</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/table/Table.js~TableComponent.html">TableComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Table">Table</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tabs/Tabs.js~TabsComponent.html">TabsComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tabs">components/tabs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tabs">Tabs</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-tags">components/tags</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/tags/Tags.js~TagsComponent.html">TagsComponent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Tags">Tags</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#components-textarea">components/textarea</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TextArea">TextArea</a></span></span></li>
@@ -174,9 +173,11 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/_classes/component/editForm/Component.edit.conditional.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import EditFormUtils from &apos;./utils&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">//import EditFormUtils from &apos;./utils&apos;;
 import { getContextComponents } from &apos;../../../../utils/utils&apos;;
 /* eslint-disable quotes, max-len */
+//select is a custom component , in order to differentiate between form.io &apos;s select component we have used &apos;selectF&apos;
+
 export default [
   {
     type: &apos;panel&apos;,
@@ -185,7 +186,7 @@ export default [
     theme: &apos;default&apos;,
     components: [
       {
-        type: &apos;select&apos;,
+        type: &apos;selectF&apos;,
         input: true,
         label: &apos;This component should Display:&apos;,
         key: &apos;conditional.show&apos;,
@@ -198,7 +199,7 @@ export default [
         }
       },
       {
-        type: &apos;select&apos;,
+        type: &apos;selectF&apos;,
         input: true,
         label: &apos;When the form component:&apos;,
         key: &apos;conditional.when&apos;,
@@ -218,12 +219,12 @@ export default [
       }
     ]
   },
-  EditFormUtils.javaScriptValue(&apos;Advanced Conditions&apos;, &apos;customConditional&apos;, &apos;conditional.json&apos;, 110,
-    &apos;&lt;p&gt;You must assign the &lt;strong&gt;show&lt;/strong&gt; variable a boolean result.&lt;/p&gt;&apos; +
-    &apos;&lt;p&gt;&lt;strong&gt;Note: Advanced Conditional logic will override the results of the Simple Conditional logic.&lt;/strong&gt;&lt;/p&gt;&apos; +
-    &apos;&lt;h5&gt;Example&lt;/h5&gt;&lt;pre&gt;show = !!data.showMe;&lt;/pre&gt;&apos;,
-    &apos;&lt;p&gt;&lt;a href=&quot;http://formio.github.io/formio.js/app/examples/conditions.html&quot; target=&quot;_blank&quot;&gt;Click here for an example&lt;/a&gt;&lt;/p&gt;&apos;
-  )
+  // EditFormUtils.javaScriptValue(&apos;Advanced Conditions&apos;, &apos;customConditional&apos;, &apos;conditional.json&apos;, 110,
+  //   &apos;&lt;p&gt;You must assign the &lt;strong&gt;show&lt;/strong&gt; variable a boolean result.&lt;/p&gt;&apos; +
+  //   &apos;&lt;p&gt;&lt;strong&gt;Note: Advanced Conditional logic will override the results of the Simple Conditional logic.&lt;/strong&gt;&lt;/p&gt;&apos; +
+  //   &apos;&lt;h5&gt;Example&lt;/h5&gt;&lt;pre&gt;show = !!data.showMe;&lt;/pre&gt;&apos;,
+  //   &apos;&lt;p&gt;&lt;a href=&quot;http://formio.github.io/formio.js/app/examples/conditions.html&quot; target=&quot;_blank&quot;&gt;Click here for an example&lt;/a&gt;&lt;/p&gt;&apos;
+  // )
 ];
 /* eslint-enable quotes, max-len */
 </code></pre>

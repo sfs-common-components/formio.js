@@ -1,0 +1,116 @@
+<table class="table datagrid-table table-bordered
+    {{ ctx.component.striped ? 'table-striped' : ''}}
+    {{ ctx.component.hover ? 'table-hover' : ''}}
+    {{ ctx.component.condensed ? 'table-sm' : ''}}
+    " {% if (ctx.component.layoutFixed) { %}style="table-layout: fixed;"{% } %}>
+  {% if (ctx.hasHeader) { %}
+  <thead aria-label="{{ctx.component.totalWidth}}" >
+    <tr>
+      {% if (ctx.component.reorder) { %}<th></th>{% } %}
+      {% if(!ctx.builder && ctx.component.serialNumber) { %}
+        <th style="width: 20px;vertical-align: middle; text-align: center;">{{ctx.t('Sr. No.')}}</th>
+      {% } %}
+      {% ctx.columns.forEach(function(col, index) { %}
+      <th aria-label="{{ctx.component && ctx.component.widthOffsets && ctx.component.widthOffsets[ctx.component.key + index] && ctx.component.widthOffsets[ctx.component.key + index].includes('px') ? ctx.component.widthOffsets[ctx.component.key + index] : ctx.component.widthOffsets && ctx.component.widthOffsets[ctx.component.key + index] && ctx.component.widthOffsets[ctx.component.key + index]}}">
+        <!-- auto adjustmemt of width in data grid -->
+        <!-- <div  class="{{col.validate && col.validate.required ? 'field-required' : ''}}"  style="overflow: auto;"  id="{{ctx.component.key}}{{index}}"> -->
+          <div  class="{{col.validate && col.validate.required ? 'field-required' : ''}}" id="{{ctx.component.key}}{{index}}" style="overflow: auto; resize: horizontal; width: {{ctx.component && ctx.component.widthOffsets && ctx.component.widthOffsets[ctx.component.key + index] && ctx.component.widthOffsets[ctx.component.key + index].includes('px') ? ctx.component.widthOffsets[ctx.component.key + index] : ((ctx.component.widthOffsets && ctx.component.widthOffsets[ctx.component.key + index] && ctx.component.widthOffsets[ctx.component.key + index] / 100) * window.screen.width) +'px'}};">
+
+          {{ col.hideLabel ? '' : ctx.t(col.label || col.title, { _userInput: true }) }}
+          {% if (col.tooltip) { %} <i ref="tooltip" tabindex="0" data-title="{{col.tooltip}}" class="{{ctx.iconClass('question-sign')}} text-muted" data-tooltip="{{col.tooltip}}"></i>{% } %}
+        </div>
+      </th>
+      {% }) %}
+      {% if (ctx.hasExtraColumn) { %}
+      <th  aria-label="108px" style="width: 108px !important" id="remove-column">
+        {% if (ctx.hasRemoveButtons) { %}
+        <div id="remove-button"></div>
+        {% } %} 
+        {% if (ctx.component.cloneRow && ctx.hasCloneRowButton) { %}
+        <div id="clone-row"></div>
+        {% } %}
+        <span class="sr-only">{{ ctx.t('Add/Remove') }}</span>
+        {% if (!ctx.builder && ctx.hasAddButton && ctx.hasTopSubmit) { %}       
+        <button class="btn btn-primary formio-button-add-row" ref="{{ctx.datagridKey}}-addRow" tabindex="{{ctx.tabIndex}}">
+          <i class="{{ctx.iconClass('plus')}}"></i>{{ctx.t(ctx.component.addAnother || 'Add Another', { _userInput: true })}}
+        </button>  
+        {% } %}      
+      </th>
+      {% } %}
+    </tr>
+  </thead>
+  {% } %}
+  <tbody ref="{{ctx.datagridKey}}-tbody" data-key="{{ctx.datagridKey}}">
+    {% ctx.rows.forEach(function(row, index) { %}
+    {% if (ctx.hasGroups && ctx.groups[index]) { %}
+    <tr ref="{{ctx.datagridKey}}-group-header" class="datagrid-group-header{{ctx.hasToggle ? ' clickable' : ''}}">
+      <td
+        ref="{{ctx.datagridKey}}-group-label"
+        colspan="{{ctx.numColumns}}"
+        class="datagrid-group-label">{{ctx.groups[index].label}}</td>
+    </tr>
+    {% } %}
+    <tr ref="{{ctx.datagridKey}}-row">
+      {% if (ctx.component.reorder) { %}
+        <td>
+          <button type="button" class="formio-drag-button btn btn-default fa fa-bars" data-key="{{ctx.datagridKey}}"></button>
+        </td>
+      {% } %}
+      {% if(!ctx.builder && ctx.component.serialNumber) { %}
+      <td style="text-align: center;vertical-align: middle;">
+        <div>{{ index + 1 }}</div>
+      </td>
+      {% } %}    
+      {% ctx.columns.forEach(function(col) { %}
+        <td ref="{{ctx.datagridKey}}" {% if (col.key && col.overlay && col.overlay.width) { %} style="width: {{col.overlay.width + 'px'}}"{% } %} >
+          {{row[col.key]}}
+        </td>
+      {% }) %}
+      {% if (ctx.hasExtraColumn) { %}   
+      {% if (ctx.hasRemoveButtons || (ctx.component.cloneRow && ctx.hasCloneRowButton)) { %}  
+      <td>
+        <div style="display: flex;
+        flex-direction: row;">
+        {% if (ctx.hasRemoveButtons) { %}
+        <button type="button" class="btn btn-secondary formio-button-remove-row" ref="{{ctx.datagridKey}}-removeRow" tabindex="{{ctx.tabIndex}}" aria-label="{{ctx.t('remove')}}" style="margin-bottom: 0.031rem;">
+          <i class="{{ctx.iconClass('remove-circle')}}"></i>
+        </button>       
+        {% } %}      
+        {% if (ctx.component.cloneRow && ctx.hasCloneRowButton){ %}        
+          <button type="button" id="clone-formio" style="background-color: #6c757d;
+          color:white;
+          font-weight: 400;
+          border: 1px solid transparent;
+          padding: 0.375rem 0.75rem;
+          border-radius: 0.25rem;
+          width: 2.483rem;
+          vertical-align: middle;
+          height:2.375rem;
+          margin-left: 0.188rem;" ref="{{ctx.datagridKey}}-cloneRow">
+            <i class="fa fa-solid fa-clone"></i>
+          </button>             
+        {% } %}
+      </div> 
+      </td> 
+      {% } %}       
+        {% if (ctx.canAddColumn) { %}
+        <td ref="{{ctx.key}}-container">
+          {{ctx.placeholder}}
+        </td>
+        {% } %}
+      {% } %}
+    </tr>
+    {% }) %}
+  </tbody>
+  {% if (!ctx.builder && ctx.hasAddButton && ctx.hasBottomSubmit) { %}
+  <tfoot>
+    <tr>
+      <td colspan="{{ctx.numColumns + 1}}">
+        <button type="button" class="btn btn-primary formio-button-add-row" ref="{{ctx.datagridKey}}-addRow" tabindex="{{ctx.tabIndex}}">
+          <i class="{{ctx.iconClass('plus')}}"></i> {{ctx.t(ctx.component.addAnother || 'Add Another', { _userInput: true })}}
+        </button>
+      </td>    
+    </tr>
+  </tfoot>
+  {% } %}
+</table>
